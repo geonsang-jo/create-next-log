@@ -1,35 +1,60 @@
 import "~styles/globals.css";
 import { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
+import localFont from "next/font/local";
+import Header from "~components/header";
+import ThemeProvider from "~styles/themeProvider";
+import { getConfig } from "~lib/config";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://if-geon.xyz";
+const pretendard = localFont({
+  src: "./fonts/PretendardVariable.woff2",
+  display: "swap",
+  weight: "45 920",
+  variable: "--font-pretendard",
+});
+
+const config = getConfig();
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(config.url || "http://localhost:3000"),
+  title: {
+    default: config.title,
+    template: `%s | ${config.title}`,
+  },
+  description: config.description,
   icons: {
     icon: [
-      {
-        url: "/favicon-light.svg",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/favicon-dark.svg",
-        media: "(prefers-color-scheme: dark)",
-      },
+      { url: "/favicon-light.svg", media: "(prefers-color-scheme: light)" },
+      { url: "/favicon-dark.svg", media: "(prefers-color-scheme: dark)" },
     ],
   },
-  verification: {
-    google: "IvtO23xqXBRCTsg8vvSstjRpZT-bQJ-6Z5620rO6gHU",
+  openGraph: {
+    type: "website",
+    siteName: config.title,
+    title: config.title,
+    description: config.description,
   },
+  twitter: {
+    card: "summary_large_image",
+    title: config.title,
+    description: config.description,
+  },
+  ...(config.googleVerification && {
+    verification: { google: config.googleVerification },
+  }),
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
-      {children}
-      <Analytics />
-    </>
+    <html suppressHydrationWarning lang="en" className={pretendard.variable}>
+      <body className={pretendard.className}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Header />
+          <div className="flex w-full justify-center">
+            <main className="container relative lg:px-8">{children}</main>
+          </div>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 };
 
