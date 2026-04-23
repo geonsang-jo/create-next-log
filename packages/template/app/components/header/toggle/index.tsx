@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useTheme } from "next-themes";
+import { useTheme } from "~styles/themeProvider";
 import Link from "next/link";
 
 import { getConfig } from "~lib/config";

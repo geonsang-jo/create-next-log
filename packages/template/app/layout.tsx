@@ -52,7 +52,12 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       style={{ "--primary": config.theme.primaryColor } as React.CSSProperties}
     >
       <body className={pretendard.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}})()`,
+          }}
+        />
+        <ThemeProvider>
           <Header />
           <div className="flex w-full justify-center">
             <main className="container relative lg:px-8">{children}</main>
