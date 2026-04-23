@@ -13,7 +13,7 @@ const config = {
   },
 
   theme: {
-    primaryColor: "#1db954",
+    primaryColor: "#2563eb",
   },
 
   googleVerification: "",

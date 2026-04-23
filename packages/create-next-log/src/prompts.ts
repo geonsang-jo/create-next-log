@@ -10,10 +10,13 @@ export interface UserInput {
 }
 
 const COLOR_PRESETS = [
-  { title: "Green", value: "#1db954" },
-  { title: "Blue", value: "#2563eb" },
-  { title: "Purple", value: "#7c3aed" },
-  { title: "Orange", value: "#ea580c" },
+  { title: "Emerald       #1ed760", value: "#1ed760" },
+  { title: "Cobalt        #2563eb", value: "#2563eb" },
+  { title: "Rose          #ff0369", value: "#ff0369" },
+  { title: "Crimson       #e50914", value: "#e50914" },
+  { title: "Violet        #7c3aed", value: "#7c3aed" },
+  { title: "Amber         #f59e0b", value: "#f59e0b" },
+  { title: "Cyan          #06b6d4", value: "#06b6d4" },
   { title: "Custom", value: "custom" },
 ];
 
