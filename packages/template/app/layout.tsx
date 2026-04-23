@@ -45,7 +45,12 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html suppressHydrationWarning lang="en" className={pretendard.variable}>
+    <html
+      suppressHydrationWarning
+      lang="en"
+      className={pretendard.variable}
+      style={{ "--primary": config.theme.primaryColor } as React.CSSProperties}
+    >
       <body className={pretendard.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />

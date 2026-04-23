@@ -41,7 +41,6 @@
     --code-punctuation: #24292f;
     --code-selector: #6f42c1;
   }
-  /* --nextra-primary-hue: 212deg; */
 
   .dark {
     --background: 240 10% 3.9%;
