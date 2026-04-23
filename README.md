@@ -63,7 +63,8 @@ my-blog/
 │       └── hello-world/
 ├── app/                        # Blog engine (no need to touch)
 │   ├── layout.tsx              # Root layout with theme & header
-│   ├── posts/                  # Post list & detail pages
+│   ├── page.tsx                # Post list (root page)
+│   ├── post/[slug]/            # Post detail page
 │   ├── components/             # UI components
 │   ├── styles/                 # CSS & theme
 │   ├── utils/posts.ts          # Post loading logic
@@ -374,15 +375,15 @@ The header navigation **automatically detects** the resume page — when `app/re
 The sitemap is **automatically generated** at build time by `app/sitemap.ts`.
 
 It includes:
-- `/posts` — the main posts listing page
-- `/posts/<slug>` — every published post, with `lastModified` set from the post's `date` field
+- `/` — the main posts listing page
+- `/post/<slug>` — every published post, with `lastModified` set from the post's `date` field
 - `/resume` — if the resume page exists
 
 **Priorities:**
 | Page | Priority | Change Frequency |
 |------|----------|-----------------|
-| `/posts` | 1.0 | weekly |
-| `/posts/<slug>` | 0.7 | monthly |
+| `/` | 1.0 | weekly |
+| `/post/<slug>` | 0.7 | monthly |
 | `/resume` | 0.5 | monthly |
 
 The sitemap URL is registered in `app/robots.ts` so search engines can find it automatically. No manual sitemap management needed — just publish posts and deploy.
