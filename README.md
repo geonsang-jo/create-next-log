@@ -49,7 +49,7 @@ cd my-blog
 npm run dev
 ```
 
-Open [http://localhost:4000](http://localhost:4000) — your blog is ready.
+Open [http://localhost:3000](http://localhost:3000) — your blog is ready.
 
 ## Project Structure
 
@@ -352,7 +352,7 @@ The `primaryColor` value controls:
 - Active navigation indicators
 - Accent highlights throughout the UI
 
-Defined as a CSS variable (`--primary`) in `app/styles/globals.css`. You can edit the config file to change it, or directly modify the CSS for fine-grained control.
+Set via `theme.primaryColor` in `next-log.config.ts`. The value is applied as a CSS variable (`--primary`) on the `<html>` tag at runtime, overriding the default in `globals.css`. You can also edit the CSS directly for fine-grained control.
 
 ## Resume Page
 
