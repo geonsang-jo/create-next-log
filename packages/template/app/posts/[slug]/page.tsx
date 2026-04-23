@@ -2,29 +2,25 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import dayjs from "dayjs";
 
-import { getPostBySlug, getAllPosts, getAvailableLocales } from "~utils/posts";
+import { getPostBySlug, getAllPosts } from "~utils/posts";
 import { MdxRenderer } from "~components/mdx/MdxRenderer";
 import { parseToc } from "~core/blog/serializeMdx";
 import TableOfContents from "~components/toc/TableOfContents";
+import { getConfig } from "~lib/config";
 import "~styles/prism.css";
 
-type Props = { params: { lang: string; slug: string } };
+type Props = { params: { slug: string } };
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://if-geon.xyz";
+const config = getConfig();
 
 const PostPage = async ({ params }: Props) => {
-  const { lang, slug } = params;
-  const post = getPostBySlug(slug, lang);
+  const { slug } = params;
+  const post = getPostBySlug(slug);
   if (!post) notFound();
 
   const toc = parseToc(post.content);
 
-  const fomattedDate = (date: string) => {
-    const formattedDateKr = dayjs(date).format("YYYY년 MM월 DD일");
-    const formattedDateEn = dayjs(date).format("MMMM DD, YYYY");
-    return lang === "ko" ? formattedDateKr : formattedDateEn;
-  };
+  const formattedDate = (date: string) => dayjs(date).format("MMMM DD, YYYY");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -32,13 +28,12 @@ const PostPage = async ({ params }: Props) => {
     headline: post.metadata.title,
     description: post.metadata.description,
     datePublished: new Date(post.metadata.date).toISOString(),
-    inLanguage: lang === "ko" ? "ko-KR" : "en-US",
     author: {
       "@type": "Person",
-      name: "Geon",
-      url: `${SITE_URL}/${lang}/resume`,
+      name: config.author.name,
+      url: `${config.url}/resume`,
     },
-    url: `${SITE_URL}/${lang}/posts/${post.slug}`,
+    url: `${config.url}/posts/${post.slug}`,
   };
 
   return (
@@ -63,7 +58,7 @@ const PostPage = async ({ params }: Props) => {
             />
           )}
           <p>
-            {post.metadata.category} | {fomattedDate(post.metadata.date)}
+            {post.metadata.category} | {formattedDate(post.metadata.date)}
           </p>
         </div>
         <div className="relative max-w-[800px] m-auto">
@@ -87,51 +82,33 @@ const PostPage = async ({ params }: Props) => {
 export default PostPage;
 
 export async function generateMetadata({ params }: Props) {
-  const { lang, slug } = params;
-  const post = getPostBySlug(slug, lang);
+  const { slug } = params;
+  const post = getPostBySlug(slug);
   if (!post) return {};
-
-  const availableLocales = getAvailableLocales(slug);
 
   const highlightParam = post.metadata.highlightWord
     ? `&highlightWord=${encodeURIComponent(post.metadata.highlightWord)}`
     : "";
   const ogImageUrl = post.metadata.thumbnail
-    ? `${SITE_URL}/posts/${slug}/${post.metadata.thumbnail}`
-    : `${SITE_URL}/api/og/${slug}?title=${encodeURIComponent(
+    ? `${config.url}/posts/${slug}/${post.metadata.thumbnail}`
+    : `${config.url}/api/og/${slug}?title=${encodeURIComponent(
         post.metadata.title
       )}${highlightParam}`;
-
-  const languages: Record<string, string> = {};
-  if (availableLocales.includes("ko")) languages.ko = `/ko/posts/${slug}`;
-  if (availableLocales.includes("en")) languages.en = `/en/posts/${slug}`;
-  languages["x-default"] = availableLocales.includes("en")
-    ? `/en/posts/${slug}`
-    : `/ko/posts/${slug}`;
-
-  const ogLocale = lang === "ko" ? "ko_KR" : "en_US";
-  const ogAlternate = lang === "ko" ? "en_US" : "ko_KR";
 
   return {
     title: post.metadata.title,
     description: post.metadata.description,
     authors: {
-      name: "Geon",
-      url: `${SITE_URL}/${lang}/resume`,
-    },
-    alternates: {
-      canonical: `/${lang}/posts/${slug}`,
-      languages,
+      name: config.author.name,
+      url: `${config.url}/resume`,
     },
     openGraph: {
       type: "article",
-      locale: ogLocale,
-      alternateLocale: ogAlternate,
       title: post.metadata.title,
       description: post.metadata.description,
-      url: `/${lang}/posts/${slug}`,
+      url: `/posts/${slug}`,
       publishedTime: new Date(post.metadata.date).toISOString(),
-      authors: ["Geon"],
+      authors: [config.author.name],
       images: [
         {
           url: ogImageUrl,
@@ -151,13 +128,6 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export const generateStaticParams = async () => {
-  const locales = ["ko", "en"] as const;
-  const params: { lang: string; slug: string }[] = [];
-  for (const lang of locales) {
-    const posts = getAllPosts(lang);
-    for (const post of posts) {
-      params.push({ lang, slug: post.slug });
-    }
-  }
-  return params;
+  const posts = getAllPosts();
+  return posts.map((post) => ({ slug: post.slug }));
 };
