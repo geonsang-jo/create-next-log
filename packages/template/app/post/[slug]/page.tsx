@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import dayjs from "dayjs";
 
 import { getPostBySlug, getAllPosts } from "~utils/posts";
 import { MdxRenderer } from "~components/mdx/MdxRenderer";
@@ -21,7 +20,12 @@ const PostPage = async ({ params }: Props) => {
 
   const toc = parseToc(post.content);
 
-  const formattedDate = (date: string) => dayjs(date).format("MMMM DD, YYYY");
+  const formattedDate = (date: string) =>
+    new Date(date).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
 
   const jsonLd = {
     "@context": "https://schema.org",

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import dayjs from "dayjs";
+
 import { Post } from "~types/post";
 import { getAllPosts } from "~utils/posts";
 import { getConfig } from "~lib/config";
@@ -20,7 +20,12 @@ export const metadata: Metadata = {
 const Article = async () => {
   const posts = getAllPosts();
 
-  const formattedDate = (date: string) => dayjs(date).format("MMMM DD, YYYY");
+  const formattedDate = (date: string) =>
+    new Date(date).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
 
   return (
     <section className="flex pt-12 pb-14 w-full md:w-[900px] m-auto px-4 md:px-0">
