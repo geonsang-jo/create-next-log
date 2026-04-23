@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import dayjs from "dayjs";
 
 import { getPostBySlug, getAllPosts } from "~utils/posts";
@@ -9,12 +10,12 @@ import TableOfContents from "~components/toc/TableOfContents";
 import { getConfig } from "~lib/config";
 import "~styles/prism.css";
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
 
 const config = getConfig();
 
 const PostPage = async ({ params }: Props) => {
-  const { slug } = params;
+  const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
@@ -81,8 +82,8 @@ const PostPage = async ({ params }: Props) => {
 
 export default PostPage;
 
-export async function generateMetadata({ params }: Props) {
-  const { slug } = params;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
 
