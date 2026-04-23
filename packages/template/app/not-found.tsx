@@ -2,18 +2,15 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <html lang="en">
-      <body>
-        <div style={{ padding: "4rem", textAlign: "center" }}>
-          <h1>404 — Not Found</h1>
-          <p>The page you requested does not exist.</p>
-          <p>
-            <Link href="/en/posts">Go to English posts</Link>
-            {" · "}
-            <Link href="/ko/posts">한국어 포스트로 이동</Link>
-          </p>
-        </div>
-      </body>
-    </html>
+    <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+      <h1 className="text-4xl font-bold">404</h1>
+      <p className="text-muted-foreground">Page not found.</p>
+      <Link
+        href="/posts"
+        className="text-sm underline underline-offset-4 hover:text-primary transition-colors"
+      >
+        Back to posts
+      </Link>
+    </div>
   );
 }
