@@ -64,14 +64,20 @@ const PostPage = async ({ params }: Props) => {
         </div>
         <div className="relative max-w-[800px] m-auto">
           <TableOfContents toc={toc} />
-          <div className="flex-col my-12">
-            <h3
-              dangerouslySetInnerHTML={{ __html: post.metadata.introTitle }}
-            />
-            <span
-              dangerouslySetInnerHTML={{ __html: post.metadata.introDesc }}
-            />
-          </div>
+          {(post.metadata.introTitle || post.metadata.introDesc) && (
+            <div className="flex-col my-12">
+              {post.metadata.introTitle && (
+                <h3
+                  dangerouslySetInnerHTML={{ __html: post.metadata.introTitle }}
+                />
+              )}
+              {post.metadata.introDesc && (
+                <span
+                  dangerouslySetInnerHTML={{ __html: post.metadata.introDesc }}
+                />
+              )}
+            </div>
+          )}
           <hr className="border-1 w-4/12 m-auto mb-20" />
           <MdxRenderer source={post.content} />
         </div>
