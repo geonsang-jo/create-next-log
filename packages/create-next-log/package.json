@@ -10,7 +10,7 @@
     "template"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node scripts/copy-template.js",
     "dev": "tsc --watch"
   },
   "dependencies": {
