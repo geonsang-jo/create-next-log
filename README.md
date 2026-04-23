@@ -270,6 +270,47 @@ Then use it in any MDX file without importing:
 <MyComponent prop="value" />
 ```
 
+## Table of Contents
+
+A table of contents is **automatically generated** from your post's headings. No configuration needed — just use `##` and `###` headings in your MDX.
+
+**How it works:**
+- `## Heading` (h2) → top-level TOC entry
+- `### Subheading` (h3) → nested under the preceding h2
+
+**Example:**
+
+```mdx
+## Getting Started          ← TOC entry
+
+Some content here...
+
+### Installation            ← nested under "Getting Started"
+
+More content...
+
+### Configuration           ← nested under "Getting Started"
+
+More content...
+
+## Advanced Usage           ← TOC entry
+
+Some content...
+
+### Custom Plugins          ← nested under "Advanced Usage"
+```
+
+**Rendered behavior:**
+- **Desktop (xl+):** appears as a sticky sidebar on the right side of the post
+- **Mobile:** hidden (screen too narrow for sidebar)
+- The current section is highlighted as you scroll
+- Click any entry to smooth-scroll to that section
+
+**Notes:**
+- `# Heading` (h1) is **not** included — use h1 only for the post title
+- Headings are slugified for anchor links (e.g. `## My Section` → `#my-section`)
+- Korean headings are supported in slug generation
+
 ## Configuration
 
 All blog settings live in `next-log.config.ts`:
