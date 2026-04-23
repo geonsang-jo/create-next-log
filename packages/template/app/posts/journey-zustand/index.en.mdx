@@ -1,0 +1,275 @@
+---
+title: Journey to Zustand Simplifying Complex Redux Structures
+date: 2023-2-8
+description: Exploring the thought process behind introducing a new state management system at Wanted-Insight
+tags: ["React", "Zustand", "State Management"]
+published: true
+category: State Management
+introTitle: Hello, I'm Geonsang Jo, a frontend developer at WantedLab's Wanted-Insight team.
+introDesc: I'd like to share our process of selecting a new state management library at the Wanted frontend team.
+---
+
+### The History of Wanted-Insight
+
+Before diving into the technical choice, let’s briefly summarize the existing situation and history of Wanted-Insight.
+
+Wanted-Insight, acquired by WantedLab in September 2018, lacked code management for over three years until January 2022. Thus, Wanted-Insight's structure remained as it was in 2018, differing from WantedLab's main tech stack and without a clear technical history, creating significant tech debt for the fast-moving Wanted-Insight.
+
+Here's a short example image of how state management was being handled.
+
+Existing project’s store structure and saga code.
+![](/posts/journey-zustand/image_1.png)
+
+There was no agreed-upon boilerplate in the code.
+Managing most operations in a single saga file increased the likelihood of side effects when debugging or modifying code. Detailed problems include:
+(Some codes handle API responses through saga, while others use action and reducer - a convoluted code structure...)
+
+### Most APIs Implemented Using a Combination of Redux and Saga
+
+This departs from the design managed through react-query.
+
+### The Issue of Several Sagas Written in One File, Resulting in Over 700 Lines of Jumbled Code
+
+This structure was prone to side effects and had strong code dependencies, making modifications difficult.
+
+### The Problem of Managing Most States with Redux Even When They Could Be Handled as Local States
+
+Based on these issues, we decided to freeze the current Redux structure and use a new state management library for future developments. If there are no problems, we plan to migrate the existing structure as well.
+
+## Conditions Required for the New State Management Library
+
+### Must Have a Low Learning Curve
+
+Introducing a new library means developers, apart from our current team, should be able to contribute with minimal learning costs, especially if they understand Redux.
+
+### The Ecosystem Must Be Established and Already a Part of the React Ecosystem
+
+This is to prevent structural or code changes if the new library is poorly managed or lacks future support.
+
+This brought us to Recoil vs Zustand.
+| **Organization** | **Poimandres** | **Meta** |
+| ---------- | ---------- | ---------- |
+| Weekly downloads <br/> 2023.12.24 ~ 2023.12.31 | 937,542 | 208,330 |
+| Bundle Size | 324kb | 2.21mb |
+| Major Version | 4.4.7 | 0.7.7 |
+| Similar Library | Redux | React Context API |
+| TS | O | O (tyeps module support) |
+| NextJS | O | O |
+
+We compared the two libraries based on the following criteria, and our Wanted-Insight team chose “Zustand.”
+
+The brief reasons for choosing Zustand are as follows:
+
+1. As of October 2022, Zustand's main download numbers are more than 2.5 times higher (ecosystem perspective).
+
+2. Although developed by Facebook's team, Recoil hasn’t updated to a major version for over two years since its release, has many issues, and the response to these issues is slow.
+   While Recoil’s ecosystem is growing, it’s not as steep as Zustand’s and is comparatively smaller.
+
+3. Zustand allows using hooks as the main means of consuming state, notifying components temporarily without causing rendering.
+
+4. These reasons led us to choose Zustand. (I also have a strong personal liking for Zustand..)
+
+### Core of Zustand and a Brief on How to Use It
+
+The Zustand development team describes its core as follows:
+
+> A small, fast, and scalable bearbones state-management solution using simplified flux principles.
+
+As stated in the core keywords, Zustand is an implementation of the Flux pattern, sharing commonalities with Redux.
+
+Since this article is not about discussing how to use Zustand, I will briefly compare a Toast UI handling state with Redux and conclude the post.
+
+(Please bear with me as this is example code for understanding, not actual business code 🙏)
+
+## Toast Handler Implemented with Zustand
+
+### Zustand / Store Creation
+
+```ts:Typescript
+export const useToastStore = create<ToastStore>((set, get) => ({
+    toastList: new Map(),
+    toastShow(content: ToastContent, option?: toastOption) {
+        const { toastList } = get();
+        const toastId = generatedUUID();
+        const newToastList = new Map(toastList);
+        const toastOption: ToastOption = { ...option, duration: option.duration };
+
+        newToastList.set(toastId, { content, option: toastOption })
+
+        set({
+            toastList: newToastList
+        });
+    },
+    toastClose(toastId: string) {
+        const { toastList } = get();
+
+        const newToastList = new Map(toastList);
+        newToastList.delete(toastId);
+
+        set({
+            toastList: newToastList
+        });
+    },
+    toasdtCloseAll() {
+        const newToastList = new Map();
+
+        set({
+            toastList: newToastList,
+        })
+    }
+}));
+```
+
+### Zustand / Actual Usage Code (hooks)
+
+```tsx:Typescript {1}
+    const { toastShow, toastList } = useToastStore();
+```
+
+Toast Handler Implemented with Redux
+Redux / Action
+
+```tsx:Typescript
+// actionType
+const SHOW_TOAST = 'toast/SHOW_TOAST' as const;
+const CLOSE_TOAST = 'toast/CLOSE_TOAST' as const;
+const CLEAR_TOAST = 'toast/CLEAR_TOAST' as const;
+
+// action create function
+interface IShowToastProps {
+    id: string;
+    content: ToastContent;
+    option: ToastOption;
+}
+
+export showToast = (payload: IShowToastProps) => {
+    type: SHOW_TOAST,
+    payload
+}
+
+export closeToast = (id: string) => {
+    type: CLOSE_TOAST,
+    payload: id
+}
+
+export clearToast = () => {
+    type: CLEAR_TOAST,
+}
+
+// type for action object
+type ToastAction =
+    | ReturnType<typeof showToast>
+    | ReturnType<typeof closeToast>
+    | ReturnType<typeof clearToast>
+```
+
+Redux / Reducer
+
+```tsx:Typescript
+
+type ToastState = {
+toastList: Map<string, Toast>;
+}
+
+const initialState: ToastState = {
+toastList: new Map()
+}
+
+// reducers
+function toast(
+    state: ToastState = initialState;
+    action: ToastAction
+):ToastState {
+    switch(action.type) {
+        case SHOW_TOAST:
+            const { id, content, options } = action.payload;
+            const { toastList } = state;
+            const newToastList = new Map(toastList);
+            const toastOption: ToastOption =  { ...option, duration: option?.duration ?? 3500 };
+
+            newToastList.set(id, { content, option: toastOption });
+
+            return { toastList: newToastList };
+
+        case CLOSE_TOAST:
+            const { toastList } = state;
+            const newToastList = new Map(toastList);
+            newToastList.delete(action.payload.id);
+
+            return { toastList: newToastList };
+
+        case CLEAR_TOAST:
+            const newToastList = new Map();
+
+            return { toastList: newToastList };
+
+        default:
+            return state;
+    }
+}
+
+export default toast;
+```
+
+Redux / Actual Usage Code
+
+```tsx:Typescript
+const toastList = useSelector((state: RootState) => state.toastList);
+const dispatch = useDispatch();
+
+// action dispatch function
+const showTaost = (content: ToastContent, option: ToastOption) => {
+    const id = generateUUD();
+    const payload = {
+        id,
+        content,
+        option
+    }
+
+    dispatch(showToast(payload));
+};
+
+const closeToast = (id: string) => {
+    dispatch(closeToast(id));
+};
+
+const clearToast = () => {
+    dispatch(clearToast());
+};
+```
+
+I’ve written the same logic using both the existing Redux and the newly adopted Zustand.
+
+What do you think? Implementing the same logic, Zustand allows us to write code with lesser cost.
+
+This was a significant advantage for us, and being able to use existing Redux devtools and various 3rd-Party Libraries for advanced state management was also appealing.
+
+### Wanted-Insight’s Global State Management Rules
+
+How does Wanted-Insight manage state management after switching to Zustand? We changed the structure that was handling APIs with Redux Saga as follows:
+
+1. Migrated API handling from Redux Saga to react-query.
+2. Managed business logic that can be handled as a local state, not necessarily as a global state, using local state.
+3. Managed values that must be handled globally (User, Toast, Modal, Environment, etc.).
+   We succeeded in migrating the existing Redux structure code to Zustand by adhering to these rules.
+
+Finally, I’ll conclude this post with thoughts from team members who’ve been using Zustand for three months.
+
+### How Does It Feel Different from Using Redux?
+
+Mr. Kibaek: It’s too easy. With Redux, we had to decide on ancillary things at the code and architecture levels, but Zustand is surprisingly easy to set up and lightweight.
+
+Mr. Geonsang: The fact that global state management is achieved with a lesser amount of code was a significant difference for me. As Mr. Gibaek mentioned, the lack of a Provider makes the setup simple and lightweight, which I appreciated.
+
+### Are You Satisfied with Using Zustand?
+
+Mr. Kibaek: I am. It's so easy that you don’t have to set it up with a heavy heart like Redux. Plus, the community is quite active, and the library is well-maintained, which adds to the satisfaction.
+
+Mr. Geonsang: Although Redux has a larger ecosystem, Zustand's similar operation style means a low learning curve, and the unexpectedly large community helps easily resolve any issues. (And the bear is cute too.)
+
+Conclusion
+Every team has its rules and an amount of technical debt it can handle.
+
+Our team thought it was too significant a tech debt to carry during a time when we needed to rapidly expand our service. So, based on the above problems, we decided to establish a new state management method with Zustand. This change, we believe, has resolved potential issues caused by tech debt in service expansion and maintenance, greatly benefiting the business.
+
+I’d like to thank my frontend team members for their efforts in creating a good system and for supporting the right thing.

@@ -1,0 +1,173 @@
+---
+title: "From Noise to Self-Learning: The Evolution of an AI Review Bot"
+date: "2026-04-14"
+description: "Lessons from running a PR review bot in production: triage, validators, 2-pass self-critique, and a self-learning feedback loop."
+author: "Geon"
+introTitle: "When development outpaces review, the approach we chose"
+introDesc: "After adopting AI coding tools, our development speed jumped and review became the bottleneck. To solve it, we built a PR review bot. I'd like to share the journey of improving it."
+category: "Engineering"
+---
+
+## Why Did We Build a PR Review Bot?
+
+### When Development Speed Outpaces Review
+
+After we adopted AI coding tools, our team's development speed picked up in a noticeable way. The problem was that review couldn't keep up.
+
+PRs started landing faster, but the reviewers were still the same people. Naturally, the review queue piled up, and **review became a deployment bottleneck** over and over. Situations like "I wrote the code in 30 minutes, but the review took a day" became the norm.
+
+### The Burden Concentrated on Individual Reviewers
+
+As the number of PRs to review grew, the burden each human reviewer had to shoulder grew too. If I was slow to review, my colleague's deploy got delayed, and testing got delayed. That pressure either dropped the quality of reviews or piled fatigue onto the reviewer.
+
+### The Clash With Adopting TBD
+
+Around that same time, our FE team was adopting Trunk-Based Development (TBD). The core of TBD is merging small PRs quickly, and the review bottleneck collided head-on with that flow. You're supposed to merge short-lived branches quickly, but when you get stuck in review, TBD's advantages disappear.
+
+<strong>"Can we automate the basic code-quality checks and lighten the load on human reviewers?"</strong> — that was the starting point for building the review bot.
+
+---
+
+## The Review Bot Improvement Timeline
+
+Over three months of running the review bot, we went through seven major improvements. (There were a lot of smaller fixes too.)
+Let me share what problem we hit in each Phase and why we made the choices we made.
+
+<Timeline>
+  <TimelineItem title="Phase 1 — Initial Build" summary="Claude-based setup, cost control via triage">
+
+  At first, we let Claude review every single changed file.
+
+  The result: **cost explosion**. When a PR changed dozens of files, running a review across all of them blew up the API bill.
+
+  This is where the first core design decision came out: **triage (pre-classification)**. A lightweight model (Haiku) first decides whether a file needs reviewing, based on a simple rationale, and only the files that need it get a detailed review — a two-stage structure.
+
+  > You shouldn't start with "review everything." You start with <strong>"decide what to review."</strong> Triage was decisive not only for cost, but also for reducing noise.
+
+  </TimelineItem>
+
+  <TimelineItem title="Phase 2 — Noise Removal" summary="A flood of noise">
+
+  Once the review bot was running and comments piled up on PRs, it actually stopped helping teammates review — it started hurting.
+
+  The bot was **duplicating things the framework or compiler already catches**, like useEffect dependency warnings or TypeScript type issues. From the PR author's perspective, they had to review things they shouldn't have needed to review, leave replies, or resolve comments. There were times a single PR ended up with 20–30 meaningless comments on it.
+
+  Another problem was that **just a rebase would trigger a fresh round of reviews**. When no code changed but the same comments reappeared after a rebase, trust dropped.
+
+  - Suppress all reviews in areas already covered by the compiler/linter
+  - Detect rebase-only changes and skip the review (comparing git tree hashes)
+
+  > The bot's value isn't "pointing out a lot." It's <strong>"catching the things only a human can catch."</strong> Once the bot intrudes on territory the tooling already covers, trust in the entire bot collapses.
+
+  Had we let trust keep eroding, teammates would naturally have started treating bot reviews as noise, and even good reviews would likely have been skipped over.
+
+  </TimelineItem>
+
+  <TimelineItem title="Phase 3 — Architecture Shift" summary="From monolith to pipeline, and feeding context to the bot">
+
+  This Phase had two big changes.
+
+  **First, from monolith to pipeline.** The review bot's logic was crammed into a single 500-line YAML, so when teammates wanted to contribute, they couldn't tell where to touch. We split it into **four independent scripts**: pre\_filter → triage → review → validator. Each stage is independent, so you can modify or debug a specific stage on its own.
+
+  **Second, context injection.** There was a problem where the bot looked only at the diff, misunderstood the PR's intent, and flagged the wrong things. We started **injecting the PR title, description, and commit messages into the review prompt together**.
+
+  > The review bot shouldn't look at only the file diff. If it doesn't know "why this change was made," it'll raise points that miss the intent entirely, and I think that was a major source of noise.
+
+  </TimelineItem>
+
+  <TimelineItem title="Phase 4 — The Paradox of Rules" summary="Turn 'no speculation' up too high and the reviews disappear">
+
+  We improved the structure in Phase 3, but noise was still happening. We picked out review patterns that repeatedly produced noise and added "don't do this kind of review" prohibition rules to the prompt.
+
+  But when we applied those prohibitions strongly, we got the opposite effect: **almost no reviews came out at all**. The bot had turned too conservative.
+
+  To solve this, we **separated generation from validation**:
+
+  - **code\_review\_guide** — a written guide codifying tone, severity criteria, and prohibition rules
+  - **validator script** — after a review is generated, a separate model verifies "does this comment follow the guide?"
+
+  In other words, this Phase was the first appearance of a **two-stage structure: generation (review) and validation (validator)**.
+
+  > Stacking more prohibitions in the prompt alone doesn't give you quality control. If you separate generation from validation, you can control quality much more stably than by just piling on "don't do this."
+
+  </TimelineItem>
+
+  <TimelineItem title="Phase 5 — 2-Pass Self-Critique" summary="Same model, different perspective — simulating reviewer and author at once">
+
+  This is where we seriously refined the validator introduced in Phase 4. It's the completion of the structure we call **2-pass review**.
+
+  **1st pass — reviewer role.** The review model looks at the PR diff and context and generates comments. So far, this is the same as a typical AI review.
+
+  **2nd pass — PR author role.** A model of the same caliber now swaps roles. "You are now the author of this PR. When you receive these comments, would you feel they're helpful?" From that perspective it evaluates each of the 1st-pass comments one by one and filters out the ones with no value.
+
+  The key here is the **few-shot examples**. We collect data on how teammates actually react to bot comments (thumbs up / thumbs down) and pass it to the validator as examples of "this kind of comment got a good reaction / this kind of comment got a bad reaction." The model then judges based on **the team's actual preferences**, not abstract rules.
+
+  On top of that, the validator does post-processing: converting imperative phrasing into questions ("Do X" → "Is there a reason you did X?"), capping comments at seven max, and keeping only the single most important one among similar comments.
+
+  > The 2-pass structure goes beyond just reducing noise — it **shifts the perspective of the review**. From "does the code follow the rules?" to "is this feedback valuable to the author?"
+
+  </TimelineItem>
+
+  <TimelineItem title="Phase 6 — Completing the Context" summary="Don't just look at the diff — read the design docs">
+
+  When you develop with AI harness engineering, you inevitably end up writing design documents — specs, plans, designs. 
+  Normally these documents are volatile after the development is done, and someone might even intentionally remove them when writing the PR. 
+  This time we decided they were actually a good asset for feeding context to the review bot.
+
+  - **Automatically detect** related spec/plan documents from the PR branch name/description
+  - Pass the contents to both review and validator as context
+  - Change the prompt to **"if there's a gap between plan and implementation, ask about the intent"**
+
+  > Personally, this was the change that delivered the biggest impact. A bot that knows the design intent stops asking "why did you do it this way?" and instead asks **"the plan says A but the implementation is B — was that intentional?"**
+
+  </TimelineItem>
+
+  <TimelineItem title="Phase 7 — Autonomous Learning Loop" summary="Automatically converting human reactions into training data">
+
+  Up to this point, every improvement was done by a person editing prompts directly. But developers are already leaving reactions on PR comments every day — thumbs up/down, resolve, replies, dismiss. I thought those signals were the most honest feedback data we had.
+
+  Once a week, a scheduled action runs and automatically collects PR comment reactions from the past week. It classifies comments that got good reactions versus bad reactions, and based on that data it generates improvement proposals for the review bot. It isn't just a report — if a proposal is judged applicable, it automatically opens a PR containing the change.
+
+  - **Automatically collect** team reactions (thumbs up/down, resolve, dismiss, etc.) to a week's worth of bot comments
+  - Classify good vs. bad calls and **accumulate them as few-shot examples**
+  - **Automatically open a PR** with prompt edits when improvement is warranted
+
+  This is a structure where the bot gradually improves to match the team's preferences without a person editing prompts by hand.
+
+  > I believe the final form of the review bot isn't "a well-crafted prompt" — it's **a system that automatically reflects the team's feedback**.
+
+  </TimelineItem>
+</Timeline>
+
+---
+
+## Before vs. After — How Did the Review Culture Change?
+
+### Shifting the Human Reviewer's Role
+
+Before the review bot, human reviewers had to look at everything — type mistakes, import order, naming, business logic, even design intent. After adopting the bot, **basic code quality and context-based checks are handled by the bot**, and human reviewers can focus on business logic and design decisions.
+
+### The Emergence of a Bypass Culture
+
+One of the interesting shifts is that **the bypass (fast-track approval) pattern started being used heavily**. For PRs where the bot had already finished its basic checks, a pattern naturally settled in of human reviewers quickly confirming and approving. Because the bot had already checked "is anything missed?" once, the human reviewer no longer needed to comb through the whole thing — they could focus only on what the bot flagged and on the business logic.
+
+### Shorter Review Wait Times
+
+It meshed well with the TBD flow too. Bot reviews run the moment a PR is opened, so they're time-zone-independent. Even when human reviewers are offline, you can get basic feedback right away, and by the time the reviewer is back, the bot has already finished the basic checks, so review time dropped significantly.
+
+---
+
+## Wrapping Up
+
+The biggest thing I learned across these seven major iterations is that <strong>an AI review bot isn't "an AI that reads code well" — it's "a feedback system that fits the team's culture."</strong>
+
+It wasn't about just editing prompts or yml files. What mattered was defining <strong>"what kind of review is valuable to the team,"</strong> and that definition came out of the team's reaction data. In the end, I think a good review bot is a reflection of a good review culture.
+
+Along the way, we had to think through both perspectives — the PR author's and the reviewer's.
+
+From the PR author's side, nitpicks about code style or repetitive UI comments weren't the kind of review we expected from reviewers.
+What authors wanted was the team's opinion on things like "is this design decision right?" or "could this change affect other features?"
+
+From the reviewer's side, it's the same. Staring at a huge pile of UI code or a PR context where you don't know what to look at first, the moment "what on earth am I supposed to look at?" crosses your mind, you end up missing the review that actually matters.
+
+A review where both sides can focus on the parts that genuinely need discussion — that is the review culture we wanted to build with the review bot.

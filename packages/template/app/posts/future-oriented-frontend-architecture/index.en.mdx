@@ -1,0 +1,323 @@
+---
+title: A Perspective on Components and Future-Oriented Frontend Architecture.
+date: 2024-1-1
+description: This article introduces how the Wanted-Insight team views components and the frontend architecture we’ve designed based on that perspective.
+tags: ["React", "Component", "Architecture"]
+published: true
+category: Architecture
+introTitle: This article introduces how the Wanted-Insight team views components and the frontend architecture we’ve designed based on that perspective.
+introDesc: Wanted-Insight utilizes agile methodologies, prioritizing rapid market fit testing within our team. Feeling the need to adapt our architecture to rapidly changing projects, we've encapsulated the process and considerations that went into designing our architecture.
+---
+
+## Our View on Components
+
+When developing with component-based frameworks, the core pursuit for many is “reusable, independent modules.” While this is widely known and aimed for, it often gets sidelined in actual service development.
+
+Let’s consider a simple example to illustrate our approach during development.
+
+In Sprint A, our team needs to develop a side navigation for the service.
+
+```tsx:Typescript
+const navItems = [
+    {label: 'Wanted', to: '/wanted'},
+    {label: 'Wanted Gigs', to: '/wanted-gigs},
+    {label: 'Wanted Insight', to: '/wanted-insight},
+    {label: 'spotlight', to:'/spotlight'},
+    ...
+]
+...
+
+return (
+    <SideNavigation navItems={navItems} />
+)
+```
+
+What do you think of the above code? It’s quite simple and intuitive.
+
+We’ve made the component easy and reusable. Developers only need to pass the items they want to render, and the side navigation takes care of all the business logic internally.
+
+Now, we don’t need to worry about what the SideNavigation component does!
+
+However, in Sprint A-2, new functionalities are requested for the side navigation:
+
+- Enable opening pages in a new window.
+- Add a search feature.
+
+Before developing these two functionalities, we can consider:
+
+1. Reflect on whether the initial SideNavigation component was the correct abstraction, and if not, you should start redesigning from the beginning.
+2. Modify to accept new props. Add the new features behind a simple condition checking the new properties.
+
+Which option would you choose? Either is fine.
+
+But under tight deadlines or the need for rapid development, we’re less likely to choose option 1.
+
+If we choose option 2, we fail to maintain the key component principle of “reusable, each independently modular”.
+
+Let’s apply the typical feature implementation process to our SideNavigation example.
+
+First, a request for design changes comes in.
+
+Designer & Product Manager: Please make the SideNavigation searchable and allow some items to open in a new window instead of page transitions!
+
+Initially, we only received two properties, label and to.
+
+Now, we need to add a few properties to our object to differentiate new types of navigation items and their various states.
+
+We have to distinguish types corresponding to whether they are current links or regular navigation items.
+
+```ts:SideNavigation-properties
+{ id, to, label, size, type, separator, isSelected }
+```
+
+Then, we need to add logic inside SideNavigation to check these properties and render accordingly.
+
+From such minor changes, the SideNavigation component now has to render based on numerous conditions, and its properties have exponentially increased.
+
+```tsx:SideNavigation
+const naviItems = [
+    {
+        label: 'Wanted',
+        to: '/wanted',
+        icon: 'https://wanted.icon/wanted',
+        type: 'group',
+        categories: [
+            {
+                label: 'recruitment',
+                to: '/wanted/recruitment',
+                type: '_self',
+            }
+        ]
+        ...
+    }
+    ...
+];
+
+...
+
+return (
+    <SideNavigation>
+        {naviItems.map((item, index) => (
+            <NaviItemWrapper>
+                {item.type !== 'group'
+                    ? <NavItem label={item.label} icon={item.icon} target={item.target} />
+                    : (
+                        <NavItem label={item.label} icon={item.icon}>
+                            <NestedGroup>
+                                {item.categories.map((category) => (
+                                    <NsetedItem isSelected={router.asPath === category.to} target={category.target}>
+                                        <span>{category.label}</span>
+                                    </NsetedItem>
+                                ))}
+                            </NestedGroup>
+                        </NavItem>
+                    )
+                }
+            </NaviItemWrapper>
+        ))}
+    </SideNavigation>
+)
+```
+
+Here’s a simple example code for illustration.
+
+Even with the current shortened code, the SideNavtion internally becomes another abstraction, NaviItems, rendering based on several conditions.
+
+As time passes, new functionality requests come in for SideNavigation.
+
+Sub-categories are added, and a feature for administrators to modify the navigation menu using drag and drop is requested.
+
+To implement this, we again need to add new properties and corresponding rendering logic.
+
+Through this example, we see how premature abstraction can result in various outcomes in a rapidly changing service environment.
+
+Such overburdened components are referred to as monolithic components. Let’s briefly touch on how monolithic components are formed.
+
+## The Growth of Monolithic Components
+
+When a team needs to develop rapidly and works from the same code base, having several components as monolithic components can make it challenging to respond quickly to market needs.
+
+Let’s summarize how the component we explored became a monolithic component.
+
+### Arises from Too Rapid Abstraction Especially, Stubbornness on DRY (Don’t Repeat Yourself)
+
+Sometimes we fall into over-abstraction in the pursuit of removing duplicate code.
+
+It’s easy to think that abstracting repeated code into one component is good practice, leading to too rapid abstraction.
+
+Developers are aware that plans can change, but such issues can arise when creating components through hasty abstraction.
+
+Every decision has trade-offs. Sometimes, refraining from wrong abstraction and refactoring code can be more beneficial for rapidly changing services.
+
+### Discourages Code Reuse
+
+When developing, we often encounter or are working on components similar to what our team needs, with designs that perform 90% of the desired outcome but require some modifications. You may also want to reuse specific parts of the feature, not its entirety.
+
+With monolithic components like SideNavigation, utilizing features like drag and drop or search becomes more challenging.
+
+Instead of refactoring or abstracting someone else’s package and risking side effects, it’s often easier to reimplement and write the code anew, even if it results in repetition.
+
+## Hence, We Chose the Bottom-Up Approach
+
+The root cause of the issues in our examples is “premature abstraction.”
+
+The simplest way not to create monolithic components might sound odd, but it’s to avoid abstraction in the early stages of development. We call this the Bottom-Up approach.
+
+So, what exactly is different with the Bottom-Up method?
+
+Let’s take SideNavigation as an example again. The initial development approach was creating a component that takes a List Array, repeats it, and forms UI, making it reusable and intuitive.
+
+Using the Bottom-Up approach, we can create components in the following order:
+
+Implement Small Components: Start with the smallest components. For instance, simple UI elements like buttons or icons.
+
+```tsx:Small-Feature
+    <section>
+        <NaviItem to="/wanted">wanted</NaviItem>
+        <LinkItem to="/event">event</LinkItem>
+        <Separator />
+    </section>
+```
+
+Implement Intermediate Components: Use small components to build larger, intermediate ones. For instance, when creating a list display component, use button and icon components to form list item components.
+
+```tsx:Middle-Feature
+    <NestedGroup>
+        <NestedSection title="Wanted">
+            <NavItem to="/wanted">Watend</NavItem>
+            <NavItem to="/event">Event</NavItem>
+            <NavItem to="/community">Community</NavItem>
+            <Separator />
+            <LinkItem to="/ai-interview" targe="_blank" />
+        </NestedSection>
+    </NestedGroup>
+```
+
+Implement Higher-Level Components: Use intermediate components to build larger, higher-level ones. For instance, combine various components to form a complete layout and UI for a feature.
+
+```tsx:HighLevel-Feature
+    <SideNavigation>
+        <NestedGroup>
+            <NestedSection title="Wanted">
+                <NavItem to="/wanted>Watend</NavItem>
+                <NavItem to="/event>Event</NavItem>
+                <NavItem to="/community>Community</NavItem>
+                <Separator />
+                <LinkItem to="/ai-interview" targe="_blank" />
+            </NestedSection>
+        </NestedGroup>
+        <NaviSection>
+            <NaviItem to="/wanted-gigs">
+                <WantedGigsIcon />
+                <span>Wanted Gigs</span>
+            </NaviItem>
+            <NaviItem to="/wanted-insight">
+                <WantedInsightIcon />
+                <span>Wanted Insight</span>
+            </NaviItem>
+            <LinkItem to="/spotlight" target="_blank">
+                <SpotlightIcon />
+                <span>Spotlight</span>
+            </LinkItem>
+        </NaviSection>
+    </SideNavigation>
+```
+
+Compared to the initially written example code, the absence of abstraction might make the code seem messier.
+
+However, being composed of small components and HTML tags, the structure is clearer, and its flexibility allows for quicker responses to issues.
+
+Initial development might be slower, but with less data dependency, the Bottom-Up approach offers more flexibility than Top-Down, demanding less cost in the long run and giving more time to consider abstraction as components grow.
+
+## Wanted-Insight’s Folder Structure
+
+The React folder structure has been a hot topic for a long time.
+
+However, there’s still no definitive answer, and many ponder questions like, “Where should I put my file?” or “How should I organize my code and component structure?”
+
+In our process, we concluded there’s no right answer and that we should design a structure that best suits how Wanted-Insight works.
+
+<FileTree>
+  <Folder name="src" defaultOpen>
+    <Folder name="hooks" />
+    <Folder name="utils" />
+    <Folder name="store" />
+    <Folder name="components" defaultOpen>
+      <Folder name="Button" />
+      <Folder name="Text" />
+      <Folder name="Modal" />
+      <Folder name="CheckBox" />
+      <Folder name="Input" />
+    </Folder>
+    <Folder name="features" defaultOpen>
+      <Folder name="Home" defaultOpen>
+        <Folder name="Layout" defaultOpen>
+          <Folder name="SideNavigation" />
+          <Folder name="NestedSection" />
+          <Folder name="SearchBar" />
+        </Folder>
+      </Folder>
+      <Folder name="KreditJob" defaultOpen>
+        <Folder name="hooks" />
+        <Folder name="SalarySection" />
+        <Folder name="SalesSection" />
+        <Folder name="EmployeeSection" />
+      </Folder>
+      <Folder name="Wanted-gigs" />
+      <Folder name="Wanted" />
+    </Folder>
+    <Folder name="pages" defaultOpen>
+      <Folder name="Wanted-gigs" />
+      <Folder name="Wanted" />
+      <Folder name="KreditJob" />
+    </Folder>
+  </Folder>
+</FileTree>
+
+We designed our folder structure with two main concepts:
+
+1. Feature-based folder structure
+2. avoiding premature abstraction
+
+![](/posts/future-oriented-frontend-architecture/image_1.png)
+
+Each feature is dependent on a page. If there’s a Kreditjob page, a corresponding Kreditjob folder is created in features, with all UI and features used on that page implemented and managed within.
+
+Looking more closely at a feature:
+
+![](/posts/future-oriented-frontend-architecture/image_2.png)
+
+Functions like Company, Home, Salary Reporting are divided into broad categories, and features used in the Company function, like Salary, Sales, Review, are managed in separate folders.
+
+Following this structure, employeeSection and reviewSection are independent features with no shared concerns.
+
+This setup allows for rapid development without pondering where to create folders or place components for a feature.
+
+It also offers significant advantages in maintenance. If there’s a need to modify a chart developed in the employeeSection, it’s easier to locate, even if it wasn’t your work area, thanks to the service layer visibility.
+
+Next, Components.
+
+Each Component is not managed beyond what is defined within the design system.
+
+Since CreditJob is not a large-scale operation, we do not have an extensive design system. However, we do have basic components like Text, Input, Button, Select, and Modal, which can be used and shared across various functions.
+
+The core of this design, as mentioned earlier, is 'Each function exists independently and is implemented without affecting other functions.' This design approach allows for rapid development and future modifications, minimizing the need for extensive deliberation during the development phase.
+
+When developing hooks, we aim to reduce deliberation over questions like, 'Could this be used elsewhere?' or 'Should this component be abstracted since it's similar to one used in the personnel section?' This mindset enables swift development and readiness for inevitable modifications.
+
+Moreover, the independent nature of 'functions' allows for easy refactoring when needed. With little or no dependencies on other functions, developers can minimize the risk of side effects.
+
+From my experience, many projects develop and evolve following a similar structure as described on this page.
+
+However, due to time constraints, developers often have limited opportunities to organize folder structures, leading to projects with a mix of different approaches. Personally, I believe that a feature-centered folder structure can significantly contribute to maintaining a clean and orderly app in the long run.
+
+While writing this article, I referred to the following resources,
+which are also useful for understanding the feature folder structure.
+
+https://github.com/alan2207/bulletproof-react
+
+https://github.com/profydev/prolog-app/
+
+https://www.robinwieruch.de/react-folder-structure/
+
+https://profy.dev/article/react-folder-structure#exit-group-by-features
