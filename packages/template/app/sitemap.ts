@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Posts index
   entries.push({
-    url: `${siteUrl}/posts`,
+    url: siteUrl,
     lastModified: new Date(),
     changeFrequency: "weekly",
     priority: 1,
@@ -27,7 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Individual posts
   for (const post of posts) {
     entries.push({
-      url: `${siteUrl}/posts/${post.slug}`,
+      url: `${siteUrl}/post/${post.slug}`,
       lastModified: new Date(post.metadata.date),
       changeFrequency: "monthly",
       priority: 0.8,

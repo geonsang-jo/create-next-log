@@ -34,7 +34,7 @@ const PostPage = async ({ params }: Props) => {
       name: config.author.name,
       url: `${config.url}/resume`,
     },
-    url: `${config.url}/posts/${post.slug}`,
+    url: `${config.url}/post/${post.slug}`,
   };
 
   return (
@@ -113,7 +113,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "article",
       title: post.metadata.title,
       description: post.metadata.description,
-      url: `/posts/${slug}`,
+      url: `/post/${slug}`,
       publishedTime: new Date(post.metadata.date).toISOString(),
       authors: [config.author.name],
       images: [

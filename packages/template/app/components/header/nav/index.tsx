@@ -17,7 +17,7 @@ function PageNav({ navItems }: { navItems: NavItem[] }) {
   return (
     <div className="md:flex">
       <Link
-        href="/posts"
+        href="/"
         className="hidden md:flex mr-6 items-center space-x-2"
       >
         <span className="font-bold sm:inline-block">{config.author.name}</span>

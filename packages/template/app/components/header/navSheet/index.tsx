@@ -36,7 +36,7 @@ function NavSheet({ navItems }: { navItems: NavItem[] }) {
       <SheetContent side={"left"}>
         <SheetHeader className="text-left">
           <SheetTitle>
-            <Link className="flex items-center" href="/posts">
+            <Link className="flex items-center" href="/">
               <span className="font-bold">{config.author.name}</span>
             </Link>
           </SheetTitle>
