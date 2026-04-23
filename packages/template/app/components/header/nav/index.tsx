@@ -1,52 +1,50 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import useIsRouteActive from "~hooks/useIsActive";
+import { getConfig } from "~lib/config";
 import { cn } from "~lib/utils";
 import NavSheet from "../navSheet";
 
-function extractLang(pathname: string): "ko" | "en" {
-  const seg = pathname.split("/")[1];
-  return seg === "ko" ? "ko" : "en";
+interface NavItem {
+  label: string;
+  path: string;
 }
 
-function PageNav() {
-  const pathname = usePathname();
-  const lang = extractLang(pathname);
-  const isArticleActive = useIsRouteActive(`/${lang}/posts`);
-  const isResumeActive = useIsRouteActive(`/${lang}/resume`);
+function PageNav({ navItems }: { navItems: NavItem[] }) {
+  const config = getConfig();
 
   return (
     <div className="md:flex">
       <Link
-        href={`/${lang}/posts`}
+        href="/posts"
         className="hidden md:flex mr-6 items-center space-x-2"
       >
-        <span className="font-bold sm:inline-block">Geon</span>
+        <span className="font-bold sm:inline-block">{config.author.name}</span>
       </Link>
       <nav className="hidden md:flex gap-6 items-center font-medium text-sm">
-        <Link
-          href={`/${lang}/posts`}
-          className={cn(
-            "transition-colors hover:text-foreground/80 text-foreground/60",
-            isArticleActive && "text-foreground"
-          )}
-        >
-          Posts
-        </Link>
-        <Link
-          href={`/${lang}/resume`}
-          className={cn(
-            "transition-colors hover:text-foreground/80 text-foreground/60",
-            isResumeActive && "text-foreground"
-          )}
-        >
-          Resume
-        </Link>
+        {navItems.map((item) => (
+          <NavLink key={item.path} href={item.path} label={item.label} />
+        ))}
       </nav>
-      <NavSheet />
+      <NavSheet navItems={navItems} />
     </div>
+  );
+}
+
+function NavLink({ href, label }: { href: string; label: string }) {
+  const isActive = useIsRouteActive(href);
+
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "transition-colors hover:text-foreground/80 text-foreground/60",
+        isActive && "text-foreground"
+      )}
+    >
+      {label}
+    </Link>
   );
 }
 

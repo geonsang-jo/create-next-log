@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import Image from "next/image";
-import { useTheme } from "next-themes";
+import { getConfig } from "~lib/config";
 import MenuIcon from "~components/icon/menuIcon";
 import {
   Sheet,
@@ -14,16 +12,21 @@ import {
   SheetTrigger,
 } from "~components/ui/sheet";
 
-function extractLang(pathname: string): "ko" | "en" {
-  const seg = pathname.split("/")[1];
-  return seg === "ko" ? "ko" : "en";
+interface NavItem {
+  label: string;
+  path: string;
 }
 
-function NavSheet() {
-  const pathname = usePathname();
-  const lang = extractLang(pathname);
-  const { theme } = useTheme();
-  const logoSrc = theme === "dark" ? "/ge-logo-dark.png" : "/ge-logo-light.png";
+function NavSheet({ navItems }: { navItems: NavItem[] }) {
+  const config = getConfig();
+
+  const socialLinks = [
+    config.social.github && { label: "GitHub", href: config.social.github },
+    config.social.linkedin && {
+      label: "LinkedIn",
+      href: config.social.linkedin,
+    },
+  ].filter(Boolean) as { label: string; href: string }[];
 
   return (
     <Sheet>
@@ -33,39 +36,31 @@ function NavSheet() {
       <SheetContent side={"left"}>
         <SheetHeader className="text-left">
           <SheetTitle>
-            <Link className="flex items-center" href={`/${lang}/posts`}>
-              <Image src={logoSrc} alt="Geon" width={24} height={24} className="mr-2 rounded-md" />
-              <span className="font-bold">Geon</span>
+            <Link className="flex items-center" href="/posts">
+              <span className="font-bold">{config.author.name}</span>
             </Link>
           </SheetTitle>
           <SheetDescription className="relative overflow-hidden my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
             <div className="flex flex-col space-y-4">
-              <Link
-                href={`/${lang}/posts`}
-                className="text-base font-medium text-foreground/80 hover:text-foreground transition-colors"
-              >
-                Posts
-              </Link>
-              <Link
-                href={`/${lang}/resume`}
-                className="text-base font-medium text-foreground/80 hover:text-foreground transition-colors"
-              >
-                Resume
-              </Link>
-              <Link
-                href="https://github.com/geonsang-jo"
-                target="_blank"
-                className="text-base font-medium text-foreground/80 hover:text-foreground transition-colors"
-              >
-                GitHub
-              </Link>
-              <Link
-                href="https://www.linkedin.com/in/geonsang-jo-5a570612b/"
-                target="_blank"
-                className="text-base font-medium text-foreground/80 hover:text-foreground transition-colors"
-              >
-                LinkedIn
-              </Link>
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  className="text-base font-medium text-foreground/80 hover:text-foreground transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
+              {socialLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  className="text-base font-medium text-foreground/80 hover:text-foreground transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </SheetDescription>
         </SheetHeader>
