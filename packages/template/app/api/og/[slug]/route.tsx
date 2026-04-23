@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ImageResponse } from "next/og";
+import { getConfig } from "~lib/config";
 
 async function loadFonts() {
   const [bold, regular] = await Promise.all([
@@ -124,7 +125,7 @@ export async function GET(req: NextRequest) {
               fontWeight: 400,
             }}
           >
-            Geon
+            {getConfig().author.name}
           </div>
         </div>
       ),
