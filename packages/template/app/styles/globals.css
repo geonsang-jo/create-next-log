@@ -136,6 +136,37 @@
   }
 }
 
+/* ─── Prose overrides for code blocks ─── */
+
+.prose pre {
+  background-color: hsl(204deg 100% 77%/0.1);
+  border: none;
+  box-shadow: none;
+  border-radius: 0.75rem;
+  padding: 1em 0;
+  margin: 0;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.prose pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: 13px;
+}
+
+.prose code {
+  font-weight: 500;
+  font-size: 0.9em;
+}
+
+.prose code::before,
+.prose code::after {
+  display: none;
+}
+
 /* ─── Container utility ─── */
 
 @utility container {
