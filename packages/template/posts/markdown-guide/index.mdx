@@ -120,7 +120,7 @@ Specify a language for syntax highlighting:
 
 ### JavaScript
 
-```javascript:greet.js
+```javascript:greet.js {2}
 function greet(name) {
   return `Hello, ${name}!`;
 }
@@ -130,7 +130,7 @@ console.log(greet("World"));
 
 ### Python
 
-```python
+```python:fibonacci.py {3-5}
 def fibonacci(n):
     a, b = 0, 1
     for _ in range(n):
@@ -143,7 +143,7 @@ for num in fibonacci(10):
 
 ### CSS
 
-```css
+```css:theme.css {2-3}
 :root {
   --primary: #2563eb;
   --background: #ffffff;
@@ -155,6 +155,16 @@ body {
   background: var(--background);
 }
 ```
+
+### Line Highlighting
+
+Highlight specific lines by adding `{lines}` after the language identifier:
+
+````markdown
+```typescript {3,5-7}
+// line 3 and lines 5-7 will be highlighted
+```
+````
 
 ## Footnotes
 
