@@ -94,6 +94,15 @@ See [docs/deploy.md](docs/deploy.md) for domain setup, Google Search Console, Ne
 | [Resume](docs/resume.md) | Generate and customize the resume page |
 | [Sitemap](docs/sitemap.md) | Auto-generated sitemap, priorities, robots.txt |
 
+## Demo
+
+<!-- TODO: Add demo link before public release -->
+Coming soon
+
+## Use Case
+
+- [if-geon.xyz](https://if-geon.xyz) — the blog that inspired create-next-log
+
 ## Tech Stack
 
 | Technology | Purpose |
