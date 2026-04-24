@@ -25,7 +25,14 @@ code[class*="language-"]::selection,
 pre[class*="language-"] *::selection,
 code[class*="language-"] *::selection {
   text-shadow: none;
-  background-color: hsl(212deg 100% 50%/0.3);
+  background-color: hsl(212deg 60% 50%/0.25);
+}
+
+.dark pre[class*="language-"]::selection,
+.dark code[class*="language-"]::selection,
+.dark pre[class*="language-"] *::selection,
+.dark code[class*="language-"] *::selection {
+  background-color: hsl(210deg 50% 60%/0.2);
 }
 
 pre {
