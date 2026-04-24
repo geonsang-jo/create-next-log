@@ -16,11 +16,11 @@ export function getInstallCommand(pm: "npm" | "yarn" | "pnpm"): string {
   }
 }
 
-export function getRunCommand(pm: "npm" | "yarn" | "pnpm"): string {
+export function getRunCommand(pm: "npm" | "yarn" | "pnpm", script = "dev"): string {
   switch (pm) {
-    case "yarn": return "yarn dev";
-    case "pnpm": return "pnpm dev";
-    default: return "npm run dev";
+    case "yarn": return `yarn ${script}`;
+    case "pnpm": return `pnpm ${script}`;
+    default: return `npm run ${script}`;
   }
 }
 
