@@ -336,6 +336,7 @@ pre[class*="language-"] > code[class*="language-"] {
   margin-bottom: -37px;
 }
 
-.rehype-code-title + pre[class*="language-"] {
+.rehype-code-title + pre[class*="language-"],
+.rehype-code-title + div > pre[class*="language-"] {
   padding-top: 53px;
 }
