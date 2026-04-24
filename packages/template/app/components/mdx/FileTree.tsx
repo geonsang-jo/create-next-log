@@ -140,7 +140,7 @@ function TreeLine({ depth }: { depth: number }) {
           style={{
             left: 20 + i * INDENT,
             width: 1,
-            backgroundColor: "hsl(var(--border))",
+            backgroundColor: "var(--border)",
           }}
         />
       ))}
@@ -165,10 +165,10 @@ function FileTree({ children }: FileTreeProps) {
         className="absolute inset-y-0 -inset-x-8"
         style={{
           backgroundImage: [
-            "linear-gradient(hsl(var(--border) / 0.7) 1px, transparent 1px)",
-            "linear-gradient(90deg, hsl(var(--border) / 0.7) 1px, transparent 1px)",
-            "linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px)",
-            "linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px)",
+            "linear-gradient(color-mix(in srgb, var(--border) 70%, transparent) 1px, transparent 1px)",
+            "linear-gradient(90deg, color-mix(in srgb, var(--border) 70%, transparent) 1px, transparent 1px)",
+            "linear-gradient(color-mix(in srgb, var(--border) 30%, transparent) 1px, transparent 1px)",
+            "linear-gradient(90deg, color-mix(in srgb, var(--border) 30%, transparent) 1px, transparent 1px)",
           ].join(", "),
           backgroundSize: "96px 96px, 96px 96px, 24px 24px, 24px 24px",
           maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
@@ -178,9 +178,9 @@ function FileTree({ children }: FileTreeProps) {
       <div
         className="relative mx-auto max-w-xs overflow-hidden rounded-xl"
         style={{
-          backgroundColor: "hsl(var(--background) / 0.6)",
+          backgroundColor: "color-mix(in srgb, var(--background) 60%, transparent)",
           backdropFilter: "blur(16px)",
-          boxShadow: "0 0 0 1px hsl(var(--border) / 0.3), 0 2px 12px hsl(var(--foreground) / 0.04), 0 8px 32px hsl(var(--foreground) / 0.06)",
+          boxShadow: "0 0 0 1px color-mix(in srgb, var(--border) 30%, transparent), 0 2px 12px color-mix(in srgb, var(--foreground) 4%, transparent), 0 8px 32px color-mix(in srgb, var(--foreground) 6%, transparent)",
         }}
       >
         <DepthContext.Provider value={0}>{children}</DepthContext.Provider>
