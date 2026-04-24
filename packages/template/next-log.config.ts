@@ -1,15 +1,15 @@
 const config = {
-  title: "My Blog",
-  description: "A blog powered by next-log",
-  url: "https://example.com",
+  title: "create-next-log",
+  description: "A CLI scaffolder for personal developer blogs, powered by Next.js 15 and MDX",
+  url: "https://create-next-log.vercel.app",
 
   author: {
-    name: "Author",
+    name: "Geon",
   },
 
   social: {
-    github: "",
-    linkedin: "",
+    github: "https://github.com/geonsang-jo/create-next-log",
+    linkedin: "https://www.linkedin.com/in/geonsang-jo-5a570612b",
   },
 
   theme: {
@@ -17,7 +17,7 @@ const config = {
   },
 
   googleVerification: "",
-  googleAnalyticsId: "", // e.g. "G-XXXXXXXXXX"
+  googleAnalyticsId: "",
 };
 
 export default config;
