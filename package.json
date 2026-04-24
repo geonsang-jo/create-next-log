@@ -1,5 +1,7 @@
 {
   "name": "create-next-log-root",
   "private": true,
-  "workspaces": ["packages/*"]
+  "workspaces": [
+    "packages/*"
+  ]
 }
