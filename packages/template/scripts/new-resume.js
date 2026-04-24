@@ -13,7 +13,7 @@ if (fs.existsSync(pagePath)) {
 }
 
 // Read author name from config
-let authorName = "Jane Doe";
+let authorName = "Geon";
 try {
   const configPath = path.join(process.cwd(), "next-log.config.ts");
   const configContent = fs.readFileSync(configPath, "utf8");

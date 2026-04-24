@@ -7,7 +7,14 @@
     "type": "git",
     "url": "https://github.com/geonsang-jo/create-next-log"
   },
-  "keywords": ["blog", "nextjs", "mdx", "cli", "scaffolder", "starter"],
+  "keywords": [
+    "blog",
+    "nextjs",
+    "mdx",
+    "cli",
+    "scaffolder",
+    "starter"
+  ],
   "engines": {
     "node": ">=18"
   },
