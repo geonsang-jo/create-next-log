@@ -303,7 +303,9 @@ pre[class*="language-"] > code[class*="language-"] {
 
 .code-line {
   padding: 0 1rem;
-  display: block;
+  display: inline-block;
+  width: 100%;
+  min-width: fit-content;
 }
 .line-highlight.line-highlight {
   background: #f7ebc6;
