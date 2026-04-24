@@ -1,5 +1,5 @@
 {
-  "name": "create-next-log",
+  "name": "create-next-log-root",
   "private": true,
   "workspaces": ["packages/*"]
 }
