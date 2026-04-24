@@ -47,6 +47,8 @@ if ! grep -q 'author: "Tester"' "posts/e2e-test-post/index.mdx"; then
 fi
 
 echo "5. Testing new-resume script..."
+# Remove resume if it came from template (demo includes it)
+rm -rf app/resume
 node scripts/new-resume.js
 if [ ! -f "app/resume/page.tsx" ] || [ ! -f "app/resume/data.ts" ]; then
   echo "FAIL: new-resume script did not create resume files"
