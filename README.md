@@ -5,7 +5,9 @@ A CLI scaffolder for personal developer blogs, powered by Next.js 15 and MDX.
 Generate a fully configured, production-ready blog with one command. Write posts in MDX, customize with a single config file, and deploy anywhere.
 
 ```bash
-npx create-next-log
+npx create-next-log        # npm
+yarn dlx create-next-log   # yarn
+pnpm dlx create-next-log   # pnpm
 ```
 
 ## Features
@@ -28,7 +30,9 @@ npx create-next-log
 ### 1. Create your blog
 
 ```bash
-npx create-next-log
+npx create-next-log        # npm
+yarn dlx create-next-log   # yarn
+pnpm dlx create-next-log   # pnpm
 ```
 
 The CLI will ask you:
@@ -46,7 +50,7 @@ The CLI will ask you:
 
 ```bash
 cd my-blog
-npm run dev
+npm run dev   # or: yarn dev / pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) — your blog is ready.
@@ -88,7 +92,7 @@ Everything inside `app/` works out of the box.
 ### Create a new post
 
 ```bash
-npm run new-post "my-first-post"
+npm run new-post "my-first-post"   # or: yarn new-post "my-first-post"
 ```
 
 This creates `posts/my-first-post/index.mdx` with scaffolded frontmatter:
@@ -124,7 +128,7 @@ Write your post here.
 
 ### Publishing workflow
 
-1. `npm run new-post "slug"` — creates a draft (`published: false`)
+1. `npm run new-post "slug"` (or `yarn new-post "slug"`) — creates a draft (`published: false`)
 2. Write your content in `posts/<slug>/index.mdx`
 3. Add images to `public/posts/<slug>/` if needed
 4. Set `published: true` when ready
@@ -360,7 +364,7 @@ Set via `theme.primaryColor` in `next-log.config.ts`. The value is applied as a 
 Generate a resume page with a guide template:
 
 ```bash
-npm run new-resume
+npm run new-resume   # or: yarn new-resume
 ```
 
 This creates `app/resume/page.tsx` with example sections:
@@ -404,7 +408,7 @@ If a post has a `thumbnail` set in frontmatter, that image is used instead of th
 
 ## Dark / Light Mode
 
-Theme switching is built-in using `next-themes`:
+Theme switching is built-in:
 - Defaults to **system preference**
 - Toggle available in the header
 - Persisted across page loads
@@ -506,22 +510,22 @@ Note: Static export disables server-side features (API routes, dynamic OG images
 | [MDX](https://mdxjs.com) | Rich content with React components |
 | [Tailwind CSS](https://tailwindcss.com) | Styling |
 | [Radix UI](https://www.radix-ui.com) | Accessible component primitives |
-| [next-themes](https://github.com/pacocoursey/next-themes) | Dark/light mode |
 | [gray-matter](https://github.com/jonschlinkert/gray-matter) | Frontmatter parsing |
 | [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) | MDX rendering |
 | [rehype-prism-plus](https://github.com/timlrx/rehype-prism-plus) | Syntax highlighting |
-| [dayjs](https://day.js.org) | Date formatting |
 
 ## Available Scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Production build |
-| `npm run start` | Start production server |
-| `npm run lint` | Run Next.js linter |
-| `npm run new-post "slug"` | Create a new blog post |
-| `npm run new-resume` | Generate the resume page |
+| Command | Description |
+|---------|-------------|
+| `dev` | Start development server |
+| `build` | Production build |
+| `start` | Start production server |
+| `lint` | Run Next.js linter |
+| `new-post "slug"` | Create a new blog post |
+| `new-resume` | Generate the resume page |
+
+Run with your package manager: `npm run <command>`, `yarn <command>`, or `pnpm <command>`.
 
 ## License
 
