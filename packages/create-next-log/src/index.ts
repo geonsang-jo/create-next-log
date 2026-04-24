@@ -21,6 +21,17 @@ async function main() {
     return;
   }
 
+  // Validate project name
+  const invalidChars = /[<>:"/\\|?*]/;
+  if (invalidChars.test(input.projectName)) {
+    console.error(
+      chalk.red(
+        `Error: Project name "${input.projectName}" contains invalid characters. Avoid < > : " / \\ | ? *`
+      )
+    );
+    process.exit(1);
+  }
+
   const projectDir = path.resolve(process.cwd(), input.projectName);
 
   if (fs.existsSync(projectDir)) {
@@ -81,8 +92,29 @@ async function main() {
 
   // Done
   console.log(chalk.green("\n  Success!") + " Your blog is ready.\n");
-  console.log(`  ${chalk.dim("cd")} ${input.projectName}`);
-  console.log(`  ${chalk.dim(getRunCommand(pm))}\n`);
+  console.log(`  ${chalk.cyan("cd")} ${input.projectName}`);
+  console.log(`  ${chalk.cyan(getRunCommand(pm, "dev"))}\n`);
+  console.log(chalk.dim("  Next steps:"));
+  console.log(
+    chalk.dim("  - Edit next-log.config.ts to customize your blog")
+  );
+  console.log(
+    chalk.dim(
+      `  - Run ${getRunCommand(pm, "new-post")} "my-first-post" to create a post`
+    )
+  );
+  console.log(
+    chalk.dim(`  - Run ${getRunCommand(pm, "new-resume")} to add a resume page`)
+  );
+  console.log(chalk.dim("  - Read the docs at docs/writing-posts.md\n"));
 }
 
-main().catch(console.error);
+main().catch((err) => {
+  console.error(
+    chalk.red("\n  An unexpected error occurred. Please try again.\n")
+  );
+  if (process.env.DEBUG) {
+    console.error(err);
+  }
+  process.exit(1);
+});
