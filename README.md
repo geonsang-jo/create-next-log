@@ -8,21 +8,6 @@ yarn dlx create-next-log   # yarn
 pnpm dlx create-next-log   # pnpm
 ```
 
-## Features
-
-- **Next.js 15** App Router with React 19
-- **MDX** for rich content — use React components inside your posts
-- **Dark / Light mode** with system preference detection
-- **Automatic sitemap** and **SEO metadata** generation
-- **Dynamic OG images** generated per post via `next/og`
-- **Table of Contents** auto-generated from headings
-- **Syntax highlighting** with Prism
-- **Resume page** — generate and auto-detect in navigation
-- **Custom MDX components** — Timeline, FileTree built-in
-- **Config-driven** — one file controls title, author, theme, social links
-- **Tailwind CSS** for styling
-- **Radix UI** component primitives
-
 ## Quick Start
 
 ```bash
