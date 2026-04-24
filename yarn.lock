@@ -3575,8 +3575,8 @@ neo-async@^2.6.2:
   version "0.1.0"
   resolved "file:packages/template"
   dependencies:
-    "@mdx-js/loader" "3.1.1"
-    "@mdx-js/react" "3.1.1"
+    "@mdx-js/loader" "3.0.1"
+    "@mdx-js/react" "3.0.1"
     "@next/mdx" "15.5.15"
     "@radix-ui/react-accordion" "1.2.12"
     "@radix-ui/react-dialog" "1.1.15"
