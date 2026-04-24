@@ -1,6 +1,11 @@
 # create-next-log
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/geonsang-jo/create-next-log/actions/workflows/ci.yml/badge.svg)](https://github.com/geonsang-jo/create-next-log/actions/workflows/ci.yml)
+
 A CLI scaffolder for personal developer blogs, powered by Next.js 15 and MDX.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fgeonsang-jo%2Fcreate-next-log%2Ftree%2Fmain%2Fpackages%2Ftemplate)
 
 ```bash
 npx create-next-log        # npm
