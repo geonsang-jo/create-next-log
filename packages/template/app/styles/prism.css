@@ -313,12 +313,9 @@ pre[class*="language-"] > code[class*="language-"] {
 }
 
 .highlight-line {
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 transparent),
-    var(--tw-ring-shadow, 0 0 transparent), var(--tw-shadow);
+  box-shadow: inset 2px 0 hsl(204deg 100% 45%/0.5);
   background-color: hsl(204deg 100% 77%/0.15);
   color: hsl(204deg 100% 30%);
-  --tw-shadow: inset 2px 0 hsl(204deg 100% 45%/0.5);
-  --tw-shadow-colored: inset 2px 0 var(--tw-shadow-color);
 }
 
 .dark .highlight-line {
@@ -327,8 +324,7 @@ pre[class*="language-"] > code[class*="language-"] {
 }
 
 .rehype-code-title {
-  --tw-text-opacity: 1;
-  color: rgba(var(--code-highlight-color), var(--tw-text-opacity));
+  color: rgba(var(--code-highlight-color), 1);
   background-color: hsl(204deg 100% 77%/0.1);
   font-size: 0.75rem;
   padding: 0.5rem 1rem;
