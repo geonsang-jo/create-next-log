@@ -108,7 +108,6 @@ Coming soon
 | Technology | Purpose |
 |------------|---------|
 | [Next.js 15](https://nextjs.org) | Framework (App Router) |
-| [React 19](https://react.dev) | UI library |
 | [MDX](https://mdxjs.com) | Rich content with React components |
 | [Tailwind CSS](https://tailwindcss.com) | Styling |
 | [Radix UI](https://www.radix-ui.com) | Accessible component primitives |
