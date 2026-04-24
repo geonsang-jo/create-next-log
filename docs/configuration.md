@@ -53,6 +53,23 @@ Add your profile URLs under the `social` key. Supported platforms:
 
 Leave a field empty or omit it to hide that icon from the header.
 
+## Favicon
+
+Replace the default favicon with your own. The template uses SVG favicons with light/dark mode support:
+
+```
+public/
+├── favicon-light.svg    ← shown in light mode
+└── favicon-dark.svg     ← shown in dark mode
+```
+
+Replace these files with your own SVG icons. The filenames must stay the same.
+
+**Tips:**
+- Use [realfavicongenerator.net](https://realfavicongenerator.net) to generate favicons from an image
+- SVG favicons support dark/light mode via `prefers-color-scheme` in the `<link>` tag
+- Keep the SVG simple — it displays at 16x16 or 32x32 pixels
+
 ## SEO settings
 
 - `url` — Your blog's production URL. Used for sitemap generation, OG image URLs, and canonical links.
