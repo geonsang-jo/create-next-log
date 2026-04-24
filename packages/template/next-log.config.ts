@@ -17,6 +17,7 @@ const config = {
   },
 
   googleVerification: "",
+  googleAnalyticsId: "", // e.g. "G-XXXXXXXXXX"
 };
 
 export default config;

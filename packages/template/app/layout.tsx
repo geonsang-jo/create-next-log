@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import Header from "~components/header";
 import ThemeProvider from "~styles/themeProvider";
 import { getConfig } from "~lib/config";
+import GoogleAnalytics from "~components/GoogleAnalytics";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -21,6 +22,7 @@ export const metadata: Metadata = {
     template: `%s | ${config.title}`,
   },
   description: config.description,
+  authors: [{ name: config.author.name }],
   icons: {
     icon: [
       { url: "/favicon-light.svg", media: "(prefers-color-scheme: light)" },
@@ -62,6 +64,21 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             __html: `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}})()`,
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: config.title,
+              description: config.description,
+              url: config.url,
+            }),
+          }}
+        />
+        {config.googleAnalyticsId && (
+          <GoogleAnalytics gaId={config.googleAnalyticsId} />
+        )}
         <ThemeProvider>
           <Header />
           <div className="flex w-full justify-center">

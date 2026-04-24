@@ -27,6 +27,9 @@ const config = {
 
   // SEO (optional)
   googleVerification: "",            // Google Search Console verification token
+
+  // Analytics (optional)
+  googleAnalyticsId: "",             // e.g. "G-XXXXXXXXXX"
 };
 
 export default config;
@@ -54,3 +57,4 @@ Leave a field empty or omit it to hide that icon from the header.
 
 - `url` — Your blog's production URL. Used for sitemap generation, OG image URLs, and canonical links.
 - `googleVerification` — Google Search Console verification token. See the [deploy guide](./deploy.md) for setup instructions.
+- `googleAnalyticsId` — Google Analytics measurement ID (e.g. `G-XXXXXXXXXX`). When set, the GA tracking script is automatically injected.
