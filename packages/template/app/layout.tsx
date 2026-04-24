@@ -1,17 +1,9 @@
 import "~styles/globals.css";
 import { Metadata } from "next";
-import localFont from "next/font/local";
 import Header from "~components/header";
 import ThemeProvider from "~styles/themeProvider";
 import { getConfig } from "~lib/config";
 import GoogleAnalytics from "~components/GoogleAnalytics";
-
-const pretendard = localFont({
-  src: "./fonts/PretendardVariable.woff2",
-  display: "swap",
-  weight: "45 920",
-  variable: "--font-pretendard",
-});
 
 const config = getConfig();
 
@@ -55,10 +47,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <html
       suppressHydrationWarning
       lang="en"
-      className={pretendard.variable}
       style={{ "--primary": config.theme.primaryColor } as React.CSSProperties}
     >
-      <body className={pretendard.className}>
+      <body>
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}})()`,

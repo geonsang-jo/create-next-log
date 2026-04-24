@@ -1,5 +1,5 @@
 /**
- * 목차 타입
+ * Table of contents types
  */
 export type TableOfContents = Section[];
 export type SubSection = {

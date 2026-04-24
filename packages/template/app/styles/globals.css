@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 
 @plugin "@tailwindcss/typography";
 
@@ -7,7 +8,7 @@
 /* ─── Theme tokens ─── */
 
 @theme {
-  --font-sans: var(--font-pretendard), system-ui, sans-serif;
+  --font-sans: "Pretendard Variable", "Pretendard", system-ui, sans-serif;
 
   --text-4xl: 36px;
   --text-4xl--line-height: 1.4;
@@ -133,6 +134,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
   }
 }
 

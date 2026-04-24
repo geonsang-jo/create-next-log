@@ -75,9 +75,9 @@ npm run build
 npm run start    # Starts production server on port 3000
 ```
 
-For static hosting (GitHub Pages, S3, etc.), add `output: 'export'` to `next.config.js`:
+For static hosting (GitHub Pages, S3, etc.), add `output: 'export'` to `next.config.ts`:
 
-```javascript
+```typescript
 const nextConfig = {
   output: 'export',
 };

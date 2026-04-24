@@ -24,7 +24,7 @@ function TimelineItem({ title, summary, children }: TimelineItemProps) {
   return (
     <AccordionItem value={title} className="border-none pb-2">
       <div className="relative">
-        {/* 제목 + 요약 + 셰브론 (클릭 시 토글) */}
+        {/* Title + summary + chevron (click to toggle) */}
         <div className="cursor-pointer" onClick={handleClick}>
           <div className="flex items-start justify-between gap-2">
             <h4 className="font-semibold text-lg mb-1">{title}</h4>
@@ -35,7 +35,7 @@ function TimelineItem({ title, summary, children }: TimelineItemProps) {
           </p>
         </div>
 
-        {/* 확장 콘텐츠 */}
+        {/* Expanded content */}
         <AccordionContent>
           <div className="mt-4 rounded-lg bg-muted/50 px-5 py-4">
             <div className="prose dark:prose-invert prose-sm max-w-none [&>p]:mb-3 [&>p]:leading-relaxed [&>ul]:my-2 [&>blockquote]:my-3">

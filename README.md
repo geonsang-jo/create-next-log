@@ -96,7 +96,6 @@ See [docs/deploy.md](docs/deploy.md) for domain setup, Google Search Console, Ne
 
 ## Demo
 
-<!-- TODO: Add demo link before public release -->
 Coming soon
 
 ## Use Case
