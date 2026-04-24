@@ -315,6 +315,9 @@ code[class*="language-html"] {
 pre[class*="language-"] > code[class*="language-"] {
   position: relative;
   z-index: 1;
+  display: grid;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 .code-line {
