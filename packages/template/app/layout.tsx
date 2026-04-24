@@ -49,7 +49,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       lang="en"
       style={{ "--primary": config.theme.primaryColor } as React.CSSProperties}
     >
-      <body>
+      <body suppressHydrationWarning>
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}})()`,
