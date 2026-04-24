@@ -46,7 +46,6 @@ pre code {
   padding: 0 !important;
   border-radius: 0 !important;
   font-size: 13px !important;
-  display: grid;
 }
 
 .rehype-code-title + pre {
