@@ -109,6 +109,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.metadata.title,
     description: post.metadata.description,
+    alternates: {
+      canonical: `${config.url}/post/${slug}`,
+    },
     authors: {
       name: config.author.name,
       url: `${config.url}/resume`,
