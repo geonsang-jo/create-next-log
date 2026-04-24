@@ -5,7 +5,7 @@
 
 A CLI scaffolder for personal developer blogs, powered by Next.js 15 and MDX.
 
-![Demo](https://github.com/user-attachments/assets/5ff113f3-e5ed-4c8e-aa01-8b3a8f9ec28a)
+![Demo](https://github.com/user-attachments/assets/d9aabdaf-53c8-4888-b2d8-ebaa56ad429e)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fgeonsang-jo%2Fcreate-next-log%2Ftree%2Fmain%2Fpackages%2Ftemplate)
 
