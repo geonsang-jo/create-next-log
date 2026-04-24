@@ -27,6 +27,11 @@ export const metadata: Metadata = {
       { url: "/favicon-dark.svg", media: "(prefers-color-scheme: dark)" },
     ],
   },
+  alternates: {
+    types: {
+      "application/rss+xml": "/feed.xml",
+    },
+  },
   openGraph: {
     type: "website",
     siteName: config.title,
