@@ -6,7 +6,10 @@ If you selected Vercel during setup, `@vercel/analytics` is already included.
 
 ### Step 1: Push to GitHub
 
+After creating your blog with `npx create-next-log`, push it to GitHub:
+
 ```bash
+cd my-blog
 git init
 git add -A
 git commit -m "Initial commit"
@@ -16,6 +19,10 @@ gh repo create my-blog --public --push
 Or create a repo on [github.com/new](https://github.com/new) and push manually:
 
 ```bash
+cd my-blog
+git init
+git add -A
+git commit -m "Initial commit"
 git remote add origin https://github.com/your-username/my-blog.git
 git branch -M main
 git push -u origin main
