@@ -7,18 +7,29 @@ A CLI scaffolder for personal developer blogs, powered by Next.js 15 and MDX.
 
 ![Demo](https://github.com/user-attachments/assets/d9aabdaf-53c8-4888-b2d8-ebaa56ad429e)
 
+## Quick Start
+
+### Option 1: One-click deploy
+
+Deploy directly to Vercel and get a blog running in seconds:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fgeonsang-jo%2Fcreate-next-log%2Ftree%2Fmain%2Fpackages%2Ftemplate)
+
+Then customize `next-log.config.ts` in your new repo.
+
+### Option 2: CLI (recommended)
+
+Create a fully customized blog with interactive prompts:
+
 ```bash
 npx create-next-log        # npm
 yarn dlx create-next-log   # yarn
 pnpm dlx create-next-log   # pnpm
 ```
 
-## Quick Start
-
 ```bash
-npx create-next-log
 cd my-blog
-npm run dev
+npm run dev   # or: yarn dev / pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) — your blog is ready.
