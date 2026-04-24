@@ -14,7 +14,7 @@ It includes:
 | Page | Priority | Change Frequency |
 |------|----------|-----------------|
 | `/` | 1.0 | weekly |
-| `/post/<slug>` | 0.7 | monthly |
+| `/post/<slug>` | 0.8 | monthly |
 | `/resume` | 0.5 | monthly |
 
 ## Robots.txt

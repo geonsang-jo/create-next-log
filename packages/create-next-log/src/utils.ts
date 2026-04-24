@@ -57,6 +57,7 @@ export function generateConfig(input: {
   },
 
   googleVerification: "",
+  googleAnalyticsId: "",
 };
 
 export default config;

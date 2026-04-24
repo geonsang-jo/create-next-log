@@ -32,8 +32,8 @@ Write your post here.
 | `author` | Yes | Author name (auto-filled from config) |
 | `category` | No | Category label shown on the detail page |
 | `thumbnail` | No | Image filename in `public/posts/<slug>/` |
-| `introTitle` | No | HTML intro heading above the post content |
-| `introDesc` | No | HTML intro description below the intro title |
+| `introTitle` | No | HTML intro heading above the post content (raw HTML — use only trusted content) |
+| `introDesc` | No | HTML intro description below the intro title (raw HTML — use only trusted content) |
 | `highlightWord` | No | Keywords highlighted in the OG image |
 | `published` | No | Set to `false` to keep as draft. Omitted or `true` = published |
 

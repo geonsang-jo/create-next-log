@@ -4,9 +4,9 @@ export type PostMetadata = {
   thumbnail?: string;
   description: string;
   author: string;
-  introTitle: string;
-  introDesc: string;
-  category: string;
+  introTitle?: string;
+  introDesc?: string;
+  category?: string;
   highlightWord?: string;
   published?: boolean;
 };

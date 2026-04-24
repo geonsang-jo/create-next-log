@@ -2,6 +2,15 @@
   "name": "create-next-log",
   "version": "0.1.0",
   "description": "CLI scaffolder for personal blogs powered by Next.js and MDX",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geonsang-jo/create-next-log"
+  },
+  "keywords": ["blog", "nextjs", "mdx", "cli", "scaffolder", "starter"],
+  "engines": {
+    "node": ">=18"
+  },
   "bin": "./dist/index.js",
   "files": [
     "dist",

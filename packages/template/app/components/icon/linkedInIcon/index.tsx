@@ -1,6 +1,6 @@
 import { IconProps } from "~types/icon";
 
-function LinkdeInIcon({ ...props }: IconProps) {
+function LinkedInIcon({ ...props }: IconProps) {
   return (
     <svg {...props} fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -13,4 +13,4 @@ function LinkdeInIcon({ ...props }: IconProps) {
   );
 }
 
-export default LinkdeInIcon;
+export default LinkedInIcon;

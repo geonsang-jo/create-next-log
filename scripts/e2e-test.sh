@@ -8,8 +8,8 @@ TEST_DIR=$(mktemp -d)
 TEMPLATE_DIR="$(cd "$(dirname "$0")/.." && pwd)/packages/create-next-log/template"
 
 echo "1. Creating test project at $TEST_DIR/test-blog..."
-cp -r "$TEMPLATE_DIR"/* "$TEST_DIR/test-blog/" 2>/dev/null || { echo "Template not found. Run 'npm run build' in packages/create-next-log first."; exit 1; }
 mkdir -p "$TEST_DIR/test-blog"
+cp -r "$TEMPLATE_DIR"/* "$TEST_DIR/test-blog/" 2>/dev/null || { echo "Template not found. Run 'npm run build' in packages/create-next-log first."; exit 1; }
 
 # Write test config
 cat > "$TEST_DIR/test-blog/next-log.config.ts" << 'EOF'
@@ -21,6 +21,7 @@ const config = {
   social: { github: "", linkedin: "" },
   theme: { primaryColor: "#2563eb" },
   googleVerification: "",
+  googleAnalyticsId: "",
 };
 export default config;
 EOF

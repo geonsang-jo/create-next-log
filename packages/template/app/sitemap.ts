@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { MetadataRoute } from "next";
 import { getConfig } from "~lib/config";
 import { getAllPosts } from "~utils/posts";
@@ -16,13 +18,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 1,
   });
 
-  // Resume
-  entries.push({
-    url: `${siteUrl}/resume`,
-    lastModified: new Date(),
-    changeFrequency: "monthly",
-    priority: 0.5,
-  });
+  // Resume (only if the page exists)
+  const resumePath = path.join(process.cwd(), "app", "resume", "page.tsx");
+  if (fs.existsSync(resumePath)) {
+    entries.push({
+      url: `${siteUrl}/resume`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    });
+  }
 
   // Individual posts
   for (const post of posts) {

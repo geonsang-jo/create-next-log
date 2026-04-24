@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { getConfig } from "~lib/config";
 import GithubIcon from "~components/icon/githubIcon";
-import LinkdeInIcon from "~components/icon/linkdeInIcon";
+import LinkedInIcon from "~components/icon/linkedInIcon";
 import MoonIcon from "~components/icon/moonIcon";
 import SunIcon from "~components/icon/sunIcon";
 
@@ -39,7 +39,7 @@ function NavToggles() {
       {config.social.linkedin && (
         <Link href={config.social.linkedin} target="_blank" passHref>
           <Button variant="ghost" className="w-9 shrink-0 px-0">
-            <LinkdeInIcon className="h-4 w-4" />
+            <LinkedInIcon className="h-4 w-4" />
           </Button>
         </Link>
       )}
