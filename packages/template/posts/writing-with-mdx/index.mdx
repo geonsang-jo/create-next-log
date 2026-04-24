@@ -61,7 +61,7 @@ Fenced code blocks support syntax highlighting for many languages. Just specify 
 
 ### TypeScript / React
 
-```tsx
+```tsx:Greeting.tsx
 interface Props {
   name: string;
   count?: number;
@@ -79,7 +79,7 @@ export function Greeting({ name, count = 0 }: Props) {
 
 ### CSS
 
-```css
+```css:styles.css
 .container {
   max-width: 768px;
   margin: 0 auto;
@@ -96,7 +96,7 @@ export function Greeting({ name, count = 0 }: Props) {
 
 ### Terminal Commands
 
-```bash
+```bash:Terminal
 # Create a new post
 npm run new-post "my-post-title"
 
@@ -109,7 +109,7 @@ npm run build
 
 ### JSON
 
-```json
+```json:package.json
 {
   "name": "my-blog",
   "version": "1.0.0",
@@ -125,7 +125,7 @@ npm run build
 
 You can create custom MDX components and register them in `app/components/mdx/index.ts`:
 
-```typescript
+```typescript:app/components/mdx/index.ts
 import { Timeline, TimelineItem } from "./Timeline";
 import { FileTree, Folder, File } from "./FileTree";
 import { MyComponent } from "./MyComponent"; // your custom component

@@ -15,7 +15,7 @@ Welcome to **next-log**! This guide walks you through setting up your blog.
 
 Open `next-log.config.ts` in the project root and update the fields:
 
-```typescript
+```typescript:next-log.config.ts
 const config = {
   title: "My Awesome Blog",
   description: "Thoughts on web development",
@@ -47,7 +47,7 @@ export default config;
 
 Run the following command to scaffold a new post:
 
-```bash
+```bash:Terminal
 npm run new-post "my-first-post"
 ```
 
@@ -57,7 +57,7 @@ This creates `posts/my-first-post/index.mdx` with frontmatter already filled in.
 
 If you want a resume/about page:
 
-```bash
+```bash:Terminal
 npm run new-resume
 ```
 
@@ -69,7 +69,7 @@ New posts are created with `published: false` by default. This lets you draft po
 
 When you are ready to publish, change the frontmatter:
 
-```yaml
+```yaml:frontmatter
 published: true
 ```
 

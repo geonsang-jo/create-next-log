@@ -62,7 +62,6 @@ code::after {
 
 pre[class*="language-"] {
   padding: 1em 0;
-  padding-top: 53px;
   margin: 0;
   overflow: auto;
   /* background-color: hsl(212deg 100% 39%/0.05); */
@@ -330,10 +329,13 @@ pre[class*="language-"] > code[class*="language-"] {
   --tw-text-opacity: 1;
   color: rgba(var(--code-highlight-color), var(--tw-text-opacity));
   background-color: hsl(204deg 100% 77%/0.1);
-  /* background-color: hsl(212deg 100% 39%/0.5); */
   font-size: 0.75rem;
   padding: 0.5rem 1rem;
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
   margin-bottom: -37px;
+}
+
+.rehype-code-title + pre[class*="language-"] {
+  padding-top: 53px;
 }
