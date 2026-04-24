@@ -4,9 +4,7 @@
 
 If you selected Vercel during setup, `@vercel/analytics` is already included.
 
-### Step-by-step
-
-1. **Push to GitHub**
+### Step 1: Push to GitHub
 
 ```bash
 git init
@@ -23,48 +21,75 @@ git branch -M main
 git push -u origin main
 ```
 
-2. **Import to Vercel**
+### Step 2: Import to Vercel
 
-- Go to [vercel.com/new](https://vercel.com/new)
-- Click **"Import Git Repository"** and select your blog repo
-- Framework Preset will auto-detect **Next.js**
-- Click **Deploy** — no additional configuration needed
+1. Go to [vercel.com/new](https://vercel.com/new)
+2. Click **"Import Git Repository"** and select your blog repo
 
-3. **Set up your domain (optional)**
+### Step 3: Configure project
 
-- In your Vercel project dashboard, go to **Settings > Domains**
-- Add your custom domain (e.g. `myblog.com`)
-- Update `url` in `next-log.config.ts` to match:
+1. Framework Preset will auto-detect **Next.js**
+2. No additional configuration needed — defaults work out of the box
+
+### Step 4: Deploy
+
+1. Click **Deploy**
+2. Wait for the build to complete
+3. Your blog is live!
+
+After deployment, every `git push` to `main` triggers an automatic redeploy.
+
+### Step 5: Set up your domain (optional)
+
+1. In your Vercel project dashboard, go to **Settings > Domains**
+2. Add your custom domain (e.g. `myblog.com`)
+3. Update `url` in `next-log.config.ts` to match:
 
 ```typescript
 url: "https://myblog.com",
 ```
 
-4. **Enable Google Search Console (optional)**
+4. Commit and push — Vercel will auto-deploy with the new URL
 
-- Go to [Google Search Console](https://search.google.com/search-console)
-- Add your domain and get the verification token
-- Set `googleVerification` in `next-log.config.ts`:
+### Step 6: Enable Google Search Console (optional)
+
+1. Go to [Google Search Console](https://search.google.com/search-console)
+2. Add your domain and get the verification token
+3. Set `googleVerification` in `next-log.config.ts`:
 
 ```typescript
 googleVerification: "your-verification-token",
 ```
 
-- Commit, push, and Vercel will auto-deploy
+4. Commit and push
 
-After deployment, every `git push` to `main` triggers an automatic redeploy.
+### Step 7: Set up Google Analytics (optional)
+
+1. Create a property at [Google Analytics](https://analytics.google.com)
+2. Get your Measurement ID (e.g. `G-XXXXXXXXXX`)
+3. Set `googleAnalyticsId` in `next-log.config.ts`:
+
+```typescript
+googleAnalyticsId: "G-XXXXXXXXXX",
+```
+
+4. Commit and push
 
 ## Netlify
 
+### Step 1: Build
+
 ```bash
-npm run build
+npm run build   # or: yarn build
 ```
 
-- Go to [app.netlify.com](https://app.netlify.com)
-- New site > Import from Git > select your repo
-- Build command: `npm run build`
-- Publish directory: `.next`
-- Install the [Next.js runtime plugin](https://www.netlify.com/with/nextjs/) for full SSR support
+### Step 2: Import to Netlify
+
+1. Go to [app.netlify.com](https://app.netlify.com)
+2. New site > Import from Git > select your repo
+3. Build command: `npm run build`
+4. Publish directory: `.next`
+5. Install the [Next.js runtime plugin](https://www.netlify.com/with/nextjs/) for full SSR support
 
 ## Other platforms
 
@@ -75,12 +100,15 @@ npm run build
 npm run start    # Starts production server on port 3000
 ```
 
+## Static export
+
 For static hosting (GitHub Pages, S3, etc.), add `output: 'export'` to `next.config.ts`:
 
 ```typescript
-const nextConfig = {
+const nextConfig: NextConfig = {
   output: 'export',
+  // ... rest of config
 };
 ```
 
-Note: Static export disables server-side features (API routes, dynamic OG images). The generated OG images will not work in static mode — use `thumbnail` in frontmatter instead.
+> **Note:** Static export disables server-side features (API routes, dynamic OG images, RSS feed). Use `thumbnail` in frontmatter for OG images instead of the dynamic generator.
