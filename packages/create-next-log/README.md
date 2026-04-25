@@ -112,7 +112,7 @@ See [docs/deploy.md](docs/deploy.md) for domain setup, Google Search Console, Ne
 
 ## Demo
 
-Coming soon
+[create-next-log-demo.vercel.app](https://create-next-log-demo.vercel.app)
 
 ## Use Case
 
