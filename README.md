@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![CI](https://github.com/geonsang-jo/create-next-log/actions/workflows/ci.yml/badge.svg)](https://github.com/geonsang-jo/create-next-log/actions/workflows/ci.yml)
 
-A CLI scaffolder for personal developer blogs, powered by Next.js 15 and MDX.
+A CLI scaffolder for personal developer blogs, powered by Next.js 15 and MDX. Fully responsive — works on desktop, tablet, and mobile.
 
 ![Demo](https://github.com/user-attachments/assets/d9aabdaf-53c8-4888-b2d8-ebaa56ad429e)
 
