@@ -1,5 +1,7 @@
 # create-next-log
 
+[![npm version](https://img.shields.io/npm/v/create-next-log.svg)](https://www.npmjs.com/package/create-next-log)
+[![npm downloads](https://img.shields.io/npm/dm/create-next-log.svg)](https://www.npmjs.com/package/create-next-log)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![CI](https://github.com/geonsang-jo/create-next-log/actions/workflows/ci.yml/badge.svg)](https://github.com/geonsang-jo/create-next-log/actions/workflows/ci.yml)
 
