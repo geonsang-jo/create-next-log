@@ -69,10 +69,13 @@ my-blog/
 All settings live in `next-log.config.ts`:
 
 ```typescript
+import type { SiteConfig } from "./types/config";
+
 const config = {
   title: "My Dev Blog",
   description: "Thoughts on web development",
   url: "https://myblog.com",
+  language: "en",
   author: { name: "Jane Doe" },
   social: {
     github: "https://github.com/janedoe",
@@ -80,7 +83,8 @@ const config = {
   },
   theme: { primaryColor: "#1db954" },
   googleVerification: "",
-};
+  googleAnalyticsId: "",
+} satisfies SiteConfig;
 
 export default config;
 ```

@@ -65,7 +65,7 @@
 ### Phase 7: Documentation
 - README with demo GIF, badges, deploy options
 - 6 detailed docs: writing-posts, mdx-components, configuration, deploy, resume, sitemap
-- CHANGELOG for v0.1.0
+- CHANGELOG for v1.0.0
 - MIT LICENSE
 
 ### Phase 8: Polish
@@ -75,6 +75,23 @@
 - Demo deployed at [create-next-log-demo.vercel.app](https://create-next-log-demo.vercel.app)
 - ESLint upgraded to v9
 - CSS import order warning fixed
+
+### Phase 9: Pre-publish QA
+- XSS fix: removed `dangerouslySetInnerHTML` from introTitle/introDesc
+- Moved `eslint-config-next`, `@tailwindcss/cli` to devDependencies
+- Config-driven `language` field (HTML lang + RSS language)
+- CLI language prompt (English, 한국어, 日本語, 中文)
+- CLI color preset preview with terminal color swatches (chalk bgHex)
+- `SiteConfig` interface + `satisfies` for type-safe config
+- Image alt text improvement (uses post title)
+- Hover color uses `--primary` CSS variable instead of hardcoded blue
+- Extracted shared `formatDate` utility
+- Empty state for zero posts
+- `next/image` fill pattern (replaced width={0} height={0})
+- Accessibility: skip-to-content link, `<nav aria-label>`, toggle aria-label
+- Vercel Analytics pinned to exact version
+- 404 page metadata
+- npm package fields: homepage, bugs
 
 ## Tech Stack
 
@@ -90,7 +107,7 @@
 
 ## Project Status
 
-**Ready for npm publish (v0.1.0)**
+**Ready for npm publish (v1.0.0)**
 
 ### Completed
 - CLI scaffolder
@@ -99,7 +116,7 @@
 - E2E tests + CI
 - Demo site
 - Public GitHub repo
-- npm pack verified (35KB, 66 files)
+- npm pack verified (36KB, 67 files)
 
 ### Future (v1.1+)
 - Search (Pagefind)

@@ -13,16 +13,20 @@ cp -r "$TEMPLATE_DIR"/* "$TEST_DIR/test-blog/" 2>/dev/null || { echo "Template n
 
 # Write test config
 cat > "$TEST_DIR/test-blog/next-log.config.ts" << 'EOF'
+import type { SiteConfig } from "./types/config";
+
 const config = {
   title: "E2E Test Blog",
   description: "Testing create-next-log",
   url: "https://example.com",
+  language: "en",
   author: { name: "Tester" },
   social: { github: "", linkedin: "" },
   theme: { primaryColor: "#2563eb" },
   googleVerification: "",
   googleAnalyticsId: "",
-};
+} satisfies SiteConfig;
+
 export default config;
 EOF
 

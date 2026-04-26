@@ -7,6 +7,7 @@ import { MdxRenderer } from "~components/mdx/MdxRenderer";
 import { parseToc } from "~core/blog/serializeMdx";
 import TableOfContents from "~components/toc/TableOfContents";
 import { getConfig } from "~lib/config";
+import { formatDate } from "~lib/utils";
 import "~styles/prism.css";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -19,13 +20,6 @@ const PostPage = async ({ params }: Props) => {
   if (!post) notFound();
 
   const toc = parseToc(post.content);
-
-  const formattedDate = (date: string) =>
-    new Date(date).toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -51,19 +45,19 @@ const PostPage = async ({ params }: Props) => {
         <div className="max-w-[1000px] m-auto text-center">
           <h1>{post.metadata.title}</h1>
           {post.metadata.thumbnail && (
-            <Image
-              src={`/posts/${post.slug}/${post.metadata.thumbnail}`}
-              alt="post_thumbnail"
-              className="rounded-[14px]"
-              sizes="(max-width: 1000px) 100vw, 1000px"
-              style={{ width: "100%", height: "auto" }}
-              width={0}
-              height={0}
-              priority
-            />
+            <div className="relative w-full aspect-[16/9]">
+              <Image
+                src={`/posts/${post.slug}/${post.metadata.thumbnail}`}
+                alt={post.metadata.title}
+                className="rounded-[14px] object-cover"
+                sizes="(max-width: 1000px) 100vw, 1000px"
+                fill
+                priority
+              />
+            </div>
           )}
           <p>
-            {post.metadata.category} | {formattedDate(post.metadata.date)}
+            {post.metadata.category} | {formatDate(post.metadata.date)}
           </p>
         </div>
         <div className="relative max-w-[800px] m-auto">
@@ -71,14 +65,10 @@ const PostPage = async ({ params }: Props) => {
           {(post.metadata.introTitle || post.metadata.introDesc) && (
             <div className="flex-col my-12">
               {post.metadata.introTitle && (
-                <h3
-                  dangerouslySetInnerHTML={{ __html: post.metadata.introTitle }}
-                />
+                <h3>{post.metadata.introTitle}</h3>
               )}
               {post.metadata.introDesc && (
-                <span
-                  dangerouslySetInnerHTML={{ __html: post.metadata.introDesc }}
-                />
+                <span>{post.metadata.introDesc}</span>
               )}
             </div>
           )}

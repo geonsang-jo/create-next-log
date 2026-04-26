@@ -47,6 +47,7 @@ function NavToggles() {
         variant="ghost"
         className="w-9 shrink-0 px-0"
         onClick={changeTheme}
+        aria-label="Toggle theme"
       >
         {mounted && resolvedTheme === "dark" ? (
           <SunIcon className="h-4 w-4" />

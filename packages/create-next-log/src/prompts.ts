@@ -1,23 +1,29 @@
 import prompts from "prompts";
+import chalk from "chalk";
 
 export interface UserInput {
   projectName: string;
   title: string;
   description: string;
   authorName: string;
+  language: string;
   primaryColor: string;
   platform: "vercel" | "other";
 }
 
+function colorSwatch(hex: string, name: string): string {
+  return `${chalk.bgHex(hex)("   ")} ${name.padEnd(10)} ${chalk.dim(hex)}`;
+}
+
 const COLOR_PRESETS = [
-  { title: "Emerald       #1ed760", value: "#1ed760" },
-  { title: "Cobalt        #2563eb", value: "#2563eb" },
-  { title: "Rose          #ff0369", value: "#ff0369" },
-  { title: "Crimson       #e50914", value: "#e50914" },
-  { title: "Violet        #7c3aed", value: "#7c3aed" },
-  { title: "Amber         #f59e0b", value: "#f59e0b" },
-  { title: "Cyan          #06b6d4", value: "#06b6d4" },
-  { title: "Custom", value: "custom" },
+  { title: colorSwatch("#1ed760", "Emerald"), value: "#1ed760" },
+  { title: colorSwatch("#2563eb", "Cobalt"), value: "#2563eb" },
+  { title: colorSwatch("#ff0369", "Rose"), value: "#ff0369" },
+  { title: colorSwatch("#e50914", "Crimson"), value: "#e50914" },
+  { title: colorSwatch("#7c3aed", "Violet"), value: "#7c3aed" },
+  { title: colorSwatch("#f59e0b", "Amber"), value: "#f59e0b" },
+  { title: colorSwatch("#06b6d4", "Cyan"), value: "#06b6d4" },
+  { title: "✎  Custom hex", value: "custom" },
 ];
 
 export async function getUserInput(): Promise<UserInput | null> {
@@ -51,9 +57,21 @@ export async function getUserInput(): Promise<UserInput | null> {
       },
       {
         type: "select",
+        name: "language",
+        message: "Language:",
+        choices: [
+          { title: "English", value: "en" },
+          { title: "한국어", value: "ko" },
+          { title: "日本語", value: "ja" },
+          { title: "中文", value: "zh" },
+        ],
+      },
+      {
+        type: "select",
         name: "colorChoice",
         message: "Primary color:",
         choices: COLOR_PRESETS,
+        initial: 1,
       },
       {
         type: (prev: string) => (prev === "custom" ? "text" : null),
@@ -82,6 +100,7 @@ export async function getUserInput(): Promise<UserInput | null> {
     title: response.title,
     description: response.description,
     authorName: response.authorName,
+    language: response.language,
     primaryColor:
       response.colorChoice === "custom"
         ? response.customColor

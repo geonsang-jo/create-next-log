@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Post } from "~types/post";
 import { getAllPosts } from "~utils/posts";
 import { getConfig } from "~lib/config";
+import { formatDate } from "~lib/utils";
 
 const config = getConfig();
 
@@ -20,12 +21,18 @@ export const metadata: Metadata = {
 const Article = async () => {
   const posts = getAllPosts();
 
-  const formattedDate = (date: string) =>
-    new Date(date).toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
+  if (posts.length === 0) {
+    return (
+      <section className="flex pt-12 pb-14 w-full md:w-[900px] m-auto px-4 md:px-0">
+        <div className="flex flex-col items-center justify-center w-full py-20 text-center">
+          <p className="text-lg text-muted-foreground mb-2">No posts yet</p>
+          <p className="text-sm text-muted-foreground">
+            Run <code className="bg-muted px-1.5 py-0.5 rounded text-sm">npm run new-post &quot;my-first-post&quot;</code> to create your first post.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="flex pt-12 pb-14 w-full md:w-[900px] m-auto px-4 md:px-0">
@@ -42,7 +49,7 @@ const Article = async () => {
               {post.metadata.thumbnail && (
                 <Image
                   src={`/posts/${post.slug}/${post?.metadata.thumbnail ?? ""}`}
-                  alt={`${post.slug} thumbnail`}
+                  alt={post.metadata.title}
                   width={240}
                   height={240}
                   priority={index === 0}
@@ -50,14 +57,14 @@ const Article = async () => {
                 />
               )}
               <div className="flex flex-col">
-                <span className="text-2xl md:text-4xl font-bold mb-3 transition-colors duration-300 ease-in-out group-hover:text-blue">
+                <span className="text-2xl md:text-4xl font-bold mb-3 transition-colors duration-300 ease-in-out group-hover:text-[var(--primary)]">
                   {post.metadata.title}
                 </span>
                 <span className="text-base md:text-lg mb-2.5">
                   {post.metadata.description}
                 </span>
                 <span className="text-sm text-slate-400">
-                  {formattedDate(post.metadata.date)}
+                  {formatDate(post.metadata.date)}
                 </span>
               </div>
             </Link>
