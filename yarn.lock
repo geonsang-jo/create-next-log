@@ -1382,7 +1382,7 @@ concat-map@0.0.1:
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
 
 "create-next-log@file:/Users/marcus/.superset/worktrees/create-next-log/next.js/packages/create-next-log":
-  version "0.1.0"
+  version "1.0.0"
   resolved "file:packages/create-next-log"
   dependencies:
     chalk "4.1.2"
@@ -3542,7 +3542,7 @@ neo-async@^2.6.2:
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
 "next-log@file:/Users/marcus/.superset/worktrees/create-next-log/next.js/packages/template":
-  version "0.1.0"
+  version "1.0.0"
   resolved "file:packages/template"
   dependencies:
     "@mdx-js/loader" "3.0.1"
@@ -3999,13 +3999,6 @@ regexp.prototype.flags@^1.5.3, regexp.prototype.flags@^1.5.4:
     get-proto "^1.0.1"
     gopd "^1.2.0"
     set-function-name "^2.0.2"
-
-rehype-add-classes@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/rehype-add-classes/-/rehype-add-classes-1.0.0.tgz"
-  integrity sha512-Iz8t2KhCNAL+0AHKjxb+kVwsHk/pI3Cy4k0R70ZGzoQiZ7WQm3o8+3odJkMhFRfcNIK1lNShIHEdC90H5LwLdg==
-  dependencies:
-    hast-util-select "^1.0.1"
 
 rehype-autolink-headings@7.1.0:
   version "7.1.0"
