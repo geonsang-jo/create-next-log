@@ -26,7 +26,7 @@ export async function GET() {
     <title><![CDATA[${config.title}]]></title>
     <link>${siteUrl}</link>
     <description><![CDATA[${config.description}]]></description>
-    <language>en</language>
+    <language>${config.language || "en"}</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>
     ${items}

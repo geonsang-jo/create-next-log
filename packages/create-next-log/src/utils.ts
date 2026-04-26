@@ -1,6 +1,3 @@
-import fs from "fs-extra";
-import path from "path";
-
 export function detectPackageManager(): "npm" | "yarn" | "pnpm" {
   const userAgent = process.env.npm_config_user_agent || "";
   if (userAgent.startsWith("yarn")) return "yarn";
@@ -32,16 +29,20 @@ export function generateConfig(input: {
   title: string;
   description: string;
   authorName: string;
+  language: string;
   primaryColor: string;
 }): string {
   const title = escapeString(input.title);
   const description = escapeString(input.description);
   const authorName = escapeString(input.authorName);
 
-  return `const config = {
+  return `import type { SiteConfig } from "./types/config";
+
+const config = {
   title: "${title}",
   description: "${description}",
   url: "https://example.com",
+  language: "${input.language}",
 
   author: {
     name: "${authorName}",
@@ -58,7 +59,7 @@ export function generateConfig(input: {
 
   googleVerification: "",
   googleAnalyticsId: "",
-};
+} satisfies SiteConfig;
 
 export default config;
 `;

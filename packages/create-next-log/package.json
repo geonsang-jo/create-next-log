@@ -1,11 +1,15 @@
 {
   "name": "create-next-log",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "CLI scaffolder for personal blogs powered by Next.js and MDX",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/geonsang-jo/create-next-log"
+  },
+  "homepage": "https://github.com/geonsang-jo/create-next-log#readme",
+  "bugs": {
+    "url": "https://github.com/geonsang-jo/create-next-log/issues"
   },
   "keywords": [
     "blog",

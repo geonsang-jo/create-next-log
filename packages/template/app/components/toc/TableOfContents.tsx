@@ -12,7 +12,7 @@ export default function TableOfContents({ toc }: Props) {
 
   useEffect(() => {
     const h2Headings = Array.from(
-      document.querySelectorAll("h2.heading")
+      document.querySelectorAll("h2")
     ) as HTMLElement[];
 
     h2Headings.forEach((h) => {

@@ -46,7 +46,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html
       suppressHydrationWarning
-      lang="en"
+      lang={config.language || "en"}
       style={{ "--primary": config.theme.primaryColor } as React.CSSProperties}
     >
       <body suppressHydrationWarning>
@@ -55,6 +55,12 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             __html: `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}})()`,
           }}
         />
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-background focus:text-foreground focus:rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+        >
+          Skip to content
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -73,7 +79,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <ThemeProvider>
           <Header />
           <div className="flex w-full justify-center">
-            <main className="container relative lg:px-8">{children}</main>
+            <main id="main-content" className="container relative lg:px-8">{children}</main>
           </div>
         </ThemeProvider>
       </body>

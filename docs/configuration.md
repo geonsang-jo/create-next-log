@@ -3,11 +3,14 @@
 All blog settings live in `next-log.config.ts`:
 
 ```typescript
+import type { SiteConfig } from "./types/config";
+
 const config = {
   // Blog info
   title: "My Dev Blog",
   description: "Thoughts on web development",
   url: "https://myblog.com",        // Used for sitemap, OG images, SEO
+  language: "en",                    // HTML lang attribute & RSS language
 
   // Author
   author: {
@@ -30,10 +33,14 @@ const config = {
 
   // Analytics (optional)
   googleAnalyticsId: "",             // e.g. "G-XXXXXXXXXX"
-};
+} satisfies SiteConfig;
 
 export default config;
 ```
+
+## Language
+
+The `language` value sets the HTML `lang` attribute and RSS feed `<language>` tag. Selected during CLI setup (English, 한국어, 日本語, 中文). You can change it to any valid [BCP 47 language tag](https://www.w3.org/International/articles/language-tags/) (e.g. `fr`, `de`, `es`).
 
 ## Primary color
 

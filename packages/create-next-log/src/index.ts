@@ -60,7 +60,7 @@ async function main() {
     const pkgPath = path.join(projectDir, "package.json");
     const pkg = fs.readJsonSync(pkgPath);
     pkg.dependencies = pkg.dependencies || {};
-    pkg.dependencies["@vercel/analytics"] = "^2.0.0";
+    pkg.dependencies["@vercel/analytics"] = "2.0.0";
     fs.writeJsonSync(pkgPath, pkg, { spaces: 2 });
 
     // Add Analytics import to layout
